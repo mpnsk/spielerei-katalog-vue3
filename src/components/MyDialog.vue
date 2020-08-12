@@ -1,12 +1,7 @@
 <template>
   <div>
-    <q-dialog v-model="fullWidth" full-width @hide="atHide" @before-show="atShow">
-      <q-card>
-        <q-card-section>
           <div class="text-h6">{{spiel.name}}</div>
-        </q-card-section>
 
-        <q-card-section class="q-pt-none">
           <div class="row" >
             <div class="col-xs-12 col-md-3 ">
               <img
@@ -27,13 +22,7 @@
             </div>
           </div>
 
-        </q-card-section>
 
-        <q-card-actions align="right" class="bg-white text-teal">
-          <q-btn flat label="OK" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 

@@ -5,38 +5,30 @@ import ChildOneView from '../components/ChildOneView'
 import MyDialog from '../components/MyDialog'
 
 const names = {
-  index: 'index',
-  users: 'users',
-  user: {
-    child: 'user.child-one',
-    dialog: 'user.dialog'
-  }
+    index: 'index',
+    users: 'users',
+    user: {
+        child: 'user.child-one',
+        dialog: 'user.dialog'
+    }
 }
 const routes = [
-  {
-    path: '/',
-    component: () => import('../layouts/MainLayout.vue'),
-    children: [
-      {name: names.index, path: 'index', component: Home},
-      {
+    {name: names.index, path: '/home', component: Home},
+    {
         name: names.users,
-        path: '',
-        component: RootView,
-        children: [
-          {
-            name: names.user.child,
-            path: 'child-one',
-            component: ChildOneView
-          },
-          {
-            name: names.user.dialog,
-            path: 'dialog/:userId',
-            component: MyDialog
-          }
-        ]
-      }
-    ]
-  }
+        path: '/',
+        component: RootView
+    },
+    {
+        name: names.user.child,
+        path: '/child-one',
+        component: ChildOneView
+    },
+    {
+        name: names.user.dialog,
+        path: '/dialog/:userId',
+        component: MyDialog
+    }
 ]
 
 const router = createRouter({
