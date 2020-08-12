@@ -28,9 +28,8 @@
 
 <script>
 import spiele from '../assets/out.json'
-import { routeNames } from '../router'
+
 export default {
-  // name: 'ComponentName',
   data () {
     return {
       fullWidth: true,
@@ -40,24 +39,5 @@ export default {
       spiel: spiele[this.$route.params.userId]
     }
   },
-  methods: {
-    atShow (showObj) {
-      console.log('showObj: ' + showObj)
-    },
-    atHide (arg) {
-      console.log('hiding' + arg)
-      console.log(arg)
-      this.$router.push({ name: routeNames.users })
-    }
-  },
-  beforeRouteEnter (to, from, next) {
-    next()
-  },
-  beforeRouteUpdate (to, from, next) {
-    next()
-  },
-  beforeRouteLeave (to, from, next) {
-    next()
-  }
 }
 </script>

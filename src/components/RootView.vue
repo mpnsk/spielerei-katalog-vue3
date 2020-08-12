@@ -125,28 +125,28 @@ export default {
       })
     }
   },
-  beforeRouteEnter (to, from, next) {
-    if (to.name === routeNames.user.dialog && from.name === null) {
-      console.log('let\'s not render this.')
-      next(vm => (vm.deferList = true))
-    }
-    next()
-  },
-  beforeRouteUpdate (to, from, next) {
-    if (
-      to.name === routeNames.users &&
-        from.name === routeNames.user.dialog &&
-        this.deferList === true
-    ) {
-      console.log('now is the time to render')
-      this.deferList = false
-    }
-
-    next()
-  },
-  beforeRouteLeave (to, from, next) {
-    next()
-  }
+  // beforeRouteEnter (to, from, next) {
+  //   if (to.name === routeNames.user.dialog && from.name === null) {
+  //     console.log('let\'s not render this.')
+  //     next(vm => (vm.deferList = true))
+  //   }
+  //   next()
+  // },
+  // beforeRouteUpdate (to, from, next) {
+  //   if (
+  //     to.name === routeNames.users &&
+  //       from.name === routeNames.user.dialog &&
+  //       this.deferList === true
+  //   ) {
+  //     console.log('now is the time to render')
+  //     this.deferList = false
+  //   }
+  //
+  //   next()
+  // },
+  // beforeRouteLeave (to, from, next) {
+  //   next()
+  // }
 }
 </script>
 <style scoped>
