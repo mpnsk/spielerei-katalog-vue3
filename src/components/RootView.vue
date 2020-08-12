@@ -56,11 +56,12 @@
     <div class="row q-col-gutter-md">
       <div class="col-md-3" v-for="(spiel, index) in spiele" :key="index" :id="index">
         <q-card class="my-card" @click="navigate(index)">
-          <q-img
+          <img
             :src="'/cover/'+spiel.name"
-            basic
+            alt="this is an image!"
+            loading="lazy"
             style="height: 150px"
-          >
+          />
             <div class="absolute-bottom text-h6">
               {{spiel.name}}
             </div>
@@ -69,7 +70,6 @@
                 Cannot load image
               </div>
             </template>
-          </q-img>
           <q-card-section>
             Spieler: {{ spiel.spielerAnzahl }} Spieler <br>
             Dauer: {{spiel.dauer}} <br>
