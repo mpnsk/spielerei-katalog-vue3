@@ -15,9 +15,9 @@ const names = {
 const routes = [
   {
     path: '/',
-    component: Home,
+    component: () => import('../layouts/MainLayout.vue'),
     children: [
-      {name: names.index, path: 'index', component: () => import('pages/Index.vue')},
+      {name: names.index, path: 'index', component: Home},
       {
         name: names.users,
         path: '',
