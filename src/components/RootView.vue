@@ -115,7 +115,6 @@ export default {
       console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
     },
     navigate (index) {
-      console.log(routeNames.user)
       this.$router.push({
         name: this.routeNames.user.dialog,
         params: { userId: index }
