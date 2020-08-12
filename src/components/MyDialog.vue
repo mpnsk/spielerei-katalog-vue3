@@ -52,6 +52,7 @@ export default {
   },
   methods: {
     atShow (showObj) {
+      console.log('showObj: ' + showObj)
     },
     atHide (arg) {
       console.log('hiding' + arg)
