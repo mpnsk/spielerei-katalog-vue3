@@ -84,8 +84,8 @@
 </template>
 
 <script>
-import spiele from 'src/assets/out.json'
-import { routeNames } from 'src/router'
+import spiele from '../assets/out.json'
+import { routeNames } from '../router'
 
 export default {
   // name: 'ComponentName',
