@@ -1,13 +1,24 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/child-one">Child one</router-link>
+      <router-link :to="{name: routeNames.index }">Home</router-link>
+      |
+      <router-link :to="{name: routeNames.about }">About</router-link>
     </div>
     <router-view/>
   </div>
 </template>
+<script>
+import {routeNames} from './router'
 
+export default {
+  data() {
+    return {
+      routeNames
+    }
+  }
+}
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
