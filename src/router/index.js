@@ -1,33 +1,35 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import Home from '../views/Home.vue'
-import RootView from '../components/RootView'
-import ChildOneView from '../components/ChildOneView'
-import MyDialog from '../components/MyDialog'
+import SpielOverview from '../components/SpielOverview'
+import SpielDetail from '../components/SpielDetail'
+import About from '../components/About'
 
 const names = {
     index: 'index',
     users: 'users',
-    user: {
-        child: 'user.child-one',
-        dialog: 'user.dialog'
-    }
+    dialog: 'dialog',
+    about: 'about'
 }
 const routes = [
-    {name: names.index, path: '/home', component: Home},
+    {
+        name: names.index,
+        path: '/home',
+        component: Home
+    },
     {
         name: names.users,
         path: '/',
-        component: RootView
+        component: SpielOverview
     },
     {
-        name: names.user.child,
-        path: '/child-one',
-        component: ChildOneView
+        name: names.about,
+        path: '/about',
+        component: About
     },
     {
-        name: names.user.dialog,
+        name: names.dialog,
         path: '/dialog/:userId',
-        component: MyDialog
+        component: SpielDetail
     }
 ]
 

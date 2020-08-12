@@ -113,7 +113,7 @@ export default {
   methods: {
     navigate (index) {
       this.$router.push({
-        name: this.routeNames.user.dialog,
+        name: this.routeNames.dialog,
         params: { userId: index }
       })
     }
