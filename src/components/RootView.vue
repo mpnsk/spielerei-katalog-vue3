@@ -149,12 +149,14 @@ export default {
   }
 }
 </script>
-<style lang="sass" scoped>
-  .my-card
-    height: 100%
-    max-width: 500px
+<style scoped>
+  .my-card {
+      height: 100%;
+      max-width: 500px;
+  }
 
-    .my-card:hover
-      box-shadow: 1px 8px 20px grey
-      -webkit-transition: box-shadow .6s ease-in-out
+    .my-card:hover {
+        box-shadow: 1px 8px 20px grey;
+        -webkit-transition: box-shadow .6s ease-in-out;
+    }
 </style>
