@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import spiele from '../assets/out.json'
+import spiele from '../assets/spiele.json'
 
 export default {
   data () {
