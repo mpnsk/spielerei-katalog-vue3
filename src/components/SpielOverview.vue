@@ -8,17 +8,25 @@
           inactiveTag: !filter.div1
          }"
                 @click="filter.div1 = !filter.div1">
-          unter 15 Min
+          unter 30 Min
         </span>
           <span v-bind:class="{ activeTag: filter.div2, inactiveTag: !filter.div2 }"
                 @click="filter.div2 = !filter.div2">
-          15-30 Min
+          30 Min - 1 Std
         </span>
           <span v-bind:class="{ activeTag: filter.div3, inactiveTag: !filter.div3 }"
                 @click="filter.div3 = !filter.div3">
-          30-45 Min
+          1-1,5 Std
         </span>
-          <button style="">example btn</button>
+          <span v-bind:class="{ activeTag: filter.div4, inactiveTag: !filter.div4 }"
+                @click="filter.div4 = !filter.div4">
+          1,5-2 Std
+        </span>
+          <span v-bind:class="{ activeTag: filter.div5, inactiveTag: !filter.div5 }"
+                @click="filter.div5 = !filter.div5">
+          über 2 Std
+        </span>
+          🕘
         </div>
         <span class="activeTag" @click="filter.div1 = !filter.div1">div1</span>
         <span class="inactiveTag">div2</span>
@@ -95,7 +103,9 @@ export default {
       filter: {
         div1: true,
         div2: true,
-        div3: true
+        div3: true,
+        div4: true,
+        div5: true
       }
     }
   },
@@ -105,7 +115,7 @@ export default {
         name: this.routeNames.dialog,
         params: {userId: index}
       })
-    }
+    },
   },
   components: {
     ToggleDiv
@@ -130,8 +140,9 @@ export default {
   border-radius: 5px;
   padding: 2px;
 }
+
 .inactiveTag:hover {
-  color: grey;
+  color: darkorange;
 }
 
 .activeTag {
@@ -140,5 +151,9 @@ export default {
   border: 1px solid;
   border-radius: 5px;
   padding: 2px;
+}
+
+.activeTag:hover {
+  background-color: darkorange;
 }
 </style>
