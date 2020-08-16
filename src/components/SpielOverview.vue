@@ -120,13 +120,19 @@ export default {
   -webkit-transition: box-shadow .6s ease-in-out;
 }
 
-.inactiveTag {
-  color: orange;
+.tagBase {
   border: 1px solid;
   border-radius: 5px;
-  padding: 2px;
+
+  user-select: none;
+  -khtml-user-select: none;
+  -o-user-select: none;
+  -webkit-user-select: none;
 }
 
+.inactiveTag {
+  color: orange;
+}
 .inactiveTag:hover {
   color: darkorange;
 }
@@ -134,11 +140,7 @@ export default {
 .activeTag {
   color: white;
   background-color: orange;
-  border: 1px solid;
-  border-radius: 5px;
-  padding: 2px;
 }
-
 .activeTag:hover {
   background-color: darkorange;
 }
