@@ -55,7 +55,7 @@
         <input type="radio" value="abc">
       </label>
     </div>
-    <div v-for="(spiel, index) in spiele" :key="index" :id="index" class="my-card" @click="navigate(index)">
+    <div v-for="(spiel, index) in spiele" :key="index" :id="'spiel-' + index" class="my-card" @click="navigate(index)">
       <img
           :src="'/cover/'+spiel.name"
           alt="this is an image!"
