@@ -3,29 +3,13 @@
     <div>
       <div style="padding: 15px;">
         <div>
-          <span v-bind:class="{
-          activeTag: filter.div1,
-          inactiveTag: !filter.div1
+          <span v-for="(data, index) in filter.dauer" :key="index"
+           v-bind:class="{
+          activeTag: data.active,
+          inactiveTag: !data.active
          }"
-                @click="filter.div1 = !filter.div1">
-          unter 30 Min
-        </span>
-          <span v-bind:class="{ activeTag: filter.div2, inactiveTag: !filter.div2 }"
-                @click="filter.div2 = !filter.div2">
-          30 Min - 1 Std
-        </span>
-          <span v-bind:class="{ activeTag: filter.div3, inactiveTag: !filter.div3 }"
-                @click="filter.div3 = !filter.div3">
-          1-1,5 Std
-        </span>
-          <span v-bind:class="{ activeTag: filter.div4, inactiveTag: !filter.div4 }"
-                @click="filter.div4 = !filter.div4">
-          1,5-2 Std
-        </span>
-          <span v-bind:class="{ activeTag: filter.div5, inactiveTag: !filter.div5 }"
-                @click="filter.div5 = !filter.div5">
-          über 2 Std
-        </span>
+                @click="data.active = !data.active">
+          {{data.text}}</span>
           🕘
         </div>
         <span class="activeTag" @click="filter.div1 = !filter.div1">div1</span>
@@ -101,11 +85,13 @@ export default {
       routeNames: routeNames,
       spiele,
       filter: {
-        div1: true,
-        div2: true,
-        div3: true,
-        div4: true,
-        div5: true
+        dauer: [
+          {active: false, text: 'unter 30 Min'},
+          {active: false, text: '30 - 60 Min'},
+          {active: false, text: '61 - 90 Min'},
+          {active: false, text: '91 - 120 Min'},
+          {active: false, text: '120+ Min'},
+        ]
       }
     }
   },
