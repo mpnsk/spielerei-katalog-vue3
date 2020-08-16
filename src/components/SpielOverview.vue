@@ -15,8 +15,7 @@
             </span>
           </span>
         </div>
-        <span class="activeTag" @click="filter.div1 = !filter.div1">div1</span>
-        <span class="inactiveTag">div2</span>
+        🕘
         <toggle-div active-class="just a class">abc</toggle-div>
         <toggle-div active-class="another string"></toggle-div>
         <toggle-div></toggle-div>
