@@ -1,16 +1,19 @@
 <template>
   <div style="padding: 15px">
     <div>
-      <div style="padding: 15px;">
-        <div>
-          <span v-for="(data, index) in filter.dauer" :key="index"
-           v-bind:class="{
-          activeTag: data.active,
-          inactiveTag: !data.active
-         }"
-                @click="data.active = !data.active">
-          {{data.text}}</span>
-          🕘
+      <div style="">
+        <div class="grid grid-cols-5">
+          <span v-for="(data, index) in filter.dauer" :key="index">
+            <span
+             v-bind:class="{
+               tagBase: true,
+               activeTag: data.active,
+               inactiveTag: !data.active,
+             }"
+             @click="data.active = !data.active">
+              {{ data.text }}
+            </span>
+          </span>
         </div>
         <span class="activeTag" @click="filter.div1 = !filter.div1">div1</span>
         <span class="inactiveTag">div2</span>
