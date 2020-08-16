@@ -88,8 +88,8 @@ export default {
       spiele,
       filter: {
         dauer: [
-          {active: false, text: 'unter 30 Min'},
-          {active: false, text: '30 - 60 Min'},
+          {active: false, text: 'bis 30 Min'},
+          {active: false, text: '31 - 60 Min'},
           {active: false, text: '61 - 90 Min'},
           {active: false, text: '91 - 120 Min'},
           {active: false, text: '120+ Min'},
