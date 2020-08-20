@@ -125,6 +125,7 @@ export default {
 .tagBase {
   border: 1px solid;
   border-radius: 5px;
+  padding: 3px;
 
   user-select: none;
   -khtml-user-select: none;
@@ -133,17 +134,10 @@ export default {
 }
 
 .inactiveTag {
-  color: orange;
+  border-color: lightgrey;
 }
-.inactiveTag:hover {
-  color: darkorange;
-}
-
 .activeTag {
-  color: white;
-  background-color: orange;
-}
-.activeTag:hover {
-  background-color: darkorange;
+  background-color: #ffd790;
+  border-color: orange;
 }
 </style>
