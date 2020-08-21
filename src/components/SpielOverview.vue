@@ -2,20 +2,33 @@
   <div style="padding: 15px">
     <div>
       <div style="">
-        <div class="grid grid-cols-5">
+        <label>Spielname
+          <input type="text">
+        </label>
+        <label>
+          Spieldauer 🕘
+        <div class="grid grid-cols-5" id="time">
           <span v-for="(data, index) in filter.dauer" :key="index">
-            <span
+            <label
              v-bind:class="{
                tagBase: true,
                activeTag: data.active,
                inactiveTag: !data.active,
              }"
-             @click="data.active = !data.active">
+            >
+              <input type="checkbox" v-model="data.active"  >
               {{ data.text }}
-            </span>
+            </label>
           </span>
         </div>
-        🕘
+        </label>
+        <label>Spieleranzahl
+          <input type="number" min="1" max="12" value="2">
+        </label>
+        <label>nur Spiele bis Alter
+          <input type="radio" >
+          <input type="number" min="1" max="12" value="2">
+        </label>
         <toggle-div active-class="just a class">abc</toggle-div>
         <toggle-div active-class="another string"></toggle-div>
         <toggle-div></toggle-div>
@@ -23,7 +36,20 @@
       <label>Titel
         <input type="text" v-model="filter.name"/>
       </label>
-    </div>
+
+      <div class="grid grid-cols-5" id="kategorien">
+          <span v-for="(data, index) in filter.kategorie" :key="index">
+            <span
+                v-bind:class="{
+               tagBase: true,
+               activeTag: data.active,
+               inactiveTag: !data.active,
+             }"
+                @click="data.active = !data.active">
+              {{ data.text }}
+            </span>
+          </span>
+      </div>
     <div>
       <label>Dauer
         <input
@@ -74,6 +100,7 @@
       </div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -88,8 +115,15 @@ export default {
       spiele,
       filter: {
         dauer: [
-          {active: false, text: 'bis 30 Min'},
-          {active: false, text: '31 - 60 Min'},
+          {active: true, text: 'bis 30 Min'},
+          {active: false, text: '60 Min'},
+          {active: true, text: '90 Min'},
+          {active: false, text: '120 Min'},
+          {active: true, text: '120+ Min'},
+        ],
+        kategorie: [
+          {active: false, text: 'Strategie'},
+          {active: false, text: 'Karten'},
           {active: false, text: '61 - 90 Min'},
           {active: false, text: '91 - 120 Min'},
           {active: false, text: '120+ Min'},
@@ -137,7 +171,7 @@ export default {
   border-color: lightgrey;
 }
 .activeTag {
-  background-color: #ffd790;
-  border-color: orange;
+  background-color: #c4ffb8;
+  border-color: green;
 }
 </style>
