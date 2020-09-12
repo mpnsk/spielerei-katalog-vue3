@@ -1,112 +1,83 @@
 <template>
   <div style="padding: 15px">
-    <div>
-      <div style="">
-        <label>Spielname
-          <input type="text">
+    <div id="filter" class="space-y-1">
+      <div id="spielname" class="">
+        <label>Titel
+          <input type="text" v-model="filter.name"/>
         </label>
+      </div>
+      <div id="spieldauer" class="space-x-1 space-y-1">
         <label>
           Spieldauer 🕘
-        <div class="grid grid-cols-5" id="time">
-          <span v-for="(data, index) in filter.dauer" :key="index">
-            <label
-             v-bind:class="{
+        </label>
+        <div v-for="(data, index) in filter.dauer" :key="index" class="inline-block">
+          <label
+              v-bind:class="{
                tagBase: true,
                activeTag: data.active,
                inactiveTag: !data.active,
              }"
-            >
-              <input type="checkbox" v-model="data.active"  >
+          >
+            <nobr>
+              <input type="checkbox" v-model="data.active">
               {{ data.text }}
-            </label>
-          </span>
+            </nobr>
+          </label>
         </div>
-        </label>
-        <label>Spieleranzahl
-          <input type="number" min="1" max="12" value="2">
-        </label>
-        <label>nur Spiele bis Alter
-          <input type="radio" >
-          <input type="number" min="1" max="12" value="2">
-        </label>
-        <toggle-div active-class="just a class">abc</toggle-div>
-        <toggle-div active-class="another string"></toggle-div>
-        <toggle-div></toggle-div>
       </div>
-      <label>Titel
-        <input type="text" v-model="filter.name"/>
-      </label>
-
-      <div class="grid grid-cols-5" id="kategorien">
-          <span v-for="(data, index) in filter.kategorie" :key="index">
-            <span
-                v-bind:class="{
+      <div id="kategorie" class="space-x-1 space-y-1">
+        <div v-for="(data, index) in filter.kategorie" :key="index" class="inline-block">
+          <label
+              v-bind:class="{
                tagBase: true,
                activeTag: data.active,
                inactiveTag: !data.active,
              }"
-                @click="data.active = !data.active">
+          >
+            <nobr>
+              <input type="checkbox" v-model="data.active">
               {{ data.text }}
-            </span>
-          </span>
+            </nobr>
+          </label>
+        </div>
       </div>
-    <div>
-      <label>Dauer
-        <input
-            type="range"
-        />
-      </label>
-    </div>
-    <div>
-      <label> Spieldauer min
-        <input type="number"
-        />
-      </label>
-    </div>
-    <div>
-      <label> Spieldauer max
-        <input type="number"
-        />
-      </label>
-    </div>
-    <div>
-      <label> Spielerzahl
-        <input
-            type="range"
-            :min="1"
-            :max="12"
-        />
-      </label>
-    </div>
-    <div>
-      <label>Random radio
-        <input type="radio" value="abc">
-      </label>
-    </div>
-    <div v-for="(spiel, index) in spiele" :key="index" :id="'spiel-' + index" class="my-card" @click="navigate(index)">
-      <img
-          :src="'/cover/'+spiel.name"
-          alt="this is an image!"
-          loading="lazy"
-          style="height: 150px"
-      />
-      <div class="absolute-bottom text-h6">
-        {{ spiel.name }}
-      </div>
-      <div>
-        Spieler: {{ spiel.spielerAnzahl }} Spieler <br>
-        Dauer: {{ spiel.dauer }} <br>
-        Alter: {{ spiel.mindestAlter }}
+      <div id="spielerzahl">
+        <label> Spielerzahl: {{filter.spielerzahl}}
+          <button class="p-1 bg-gray-200" @click="filter.spielerzahl--">-</button>
+          <input
+              type="range"
+              :min="1"
+              :max="12"
+              v-model="filter.spielerzahl"
+          />
+          <button class="p-1 bg-gray-200" @click="filter.spielerzahl++">+</button>
+        </label></div>
+      <div id="spiele">
+        <div v-for="(spiel, index) in spiele" :key="index" :id="'spiel-' + index" class="my-card"
+             @click="navigate(index)">
+          <img
+              :src="'/cover/'+spiel.name"
+              alt="this is an image!"
+              loading="lazy"
+              style="height: 150px"
+          />
+          <div class="absolute-bottom text-h6">
+            {{ spiel.name }}
+          </div>
+          <div>
+            Spieler: {{ spiel.spielerAnzahl }} Spieler <br>
+            Dauer: {{ spiel.dauer }} <br>
+            Alter: {{ spiel.mindestAlter }}
+          </div>
+        </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
 <script>
 import spiele from '../assets/spiele.json'
 import {routeNames} from '@/router'
-import ToggleDiv from "@/components/ToggleDiv";
 
 export default {
   data() {
@@ -118,16 +89,22 @@ export default {
           {active: true, text: 'bis 30 Min'},
           {active: false, text: '60 Min'},
           {active: true, text: '90 Min'},
-          {active: false, text: '120 Min'},
           {active: true, text: '120+ Min'},
         ],
         kategorie: [
           {active: false, text: 'Strategie'},
+          {active: false, text: 'Builder'},
+          {active: false, text: 'Knobel'},
+          {active: false, text: 'Quiz'},
           {active: false, text: 'Karten'},
-          {active: false, text: '61 - 90 Min'},
-          {active: false, text: '91 - 120 Min'},
-          {active: false, text: '120+ Min'},
-        ]
+          {active: false, text: 'Klassiker'},
+          {active: false, text: 'Familienspiel'},
+          {active: false, text: 'Partyspiel'},
+          {active: false, text: 'Gamer\'s Games'},
+          {active: false, text: 'Wirtschaftsspiel'},
+          {active: false, text: 'Würfelspiel'},
+        ],
+        spielerzahl: 2
       }
     }
   },
@@ -139,9 +116,6 @@ export default {
       })
     },
   },
-  components: {
-    ToggleDiv
-  }
 }
 </script>
 <style scoped>
@@ -170,8 +144,18 @@ export default {
 .inactiveTag {
   border-color: lightgrey;
 }
+
 .activeTag {
   background-color: #c4ffb8;
   border-color: green;
+}
+
+.selectChecked {
+  background-color: #c4ffb8;
+  border-color: green;
+}
+
+.selectUnchecked {
+  border-color: lightgrey;
 }
 </style>
