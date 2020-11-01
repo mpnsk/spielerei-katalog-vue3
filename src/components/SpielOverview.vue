@@ -1,6 +1,8 @@
 <template>
   <div style="padding: 15px">
     <div id="filter" class="space-y-1">
+
+
       <div id="spielname" class="">
         <label>Titel
           <input type="text" v-model="filter.name"/>
@@ -56,9 +58,9 @@
         <div v-for="(spiel, index) in spiele" :key="index" :id="'spiel-' + index" class="my-card"
              @click="navigate(index)">
           <img
-              :src="'/cover/'+spiel.name"
+              :data-src="spiel.coverUrl"
               alt="this is an image!"
-              loading="lazy"
+              class="lazyload"
               style="height: 150px"
           />
           <div class="absolute-bottom text-h6">
@@ -76,43 +78,43 @@
 </template>
 
 <script>
-import spiele from '../assets/spiele.json'
+import store from '../GameStore'
 import {routeNames} from '@/router'
+// eslint-disable-next-line no-unused-vars
+import {computed, reactive, ref} from "@vue/reactivity";
 
 export default {
-  data() {
-    return {
-      routeNames: routeNames,
-      spiele,
-      filter: {
-        dauer: [
-          {active: true, text: 'bis 30 Min'},
-          {active: false, text: '60 Min'},
-          {active: true, text: '90 Min'},
-          {active: true, text: '120+ Min'},
-        ],
-        kategorie: [
-          {active: false, text: 'Strategie'},
-          {active: false, text: 'Builder'},
-          {active: false, text: 'Knobel'},
-          {active: false, text: 'Quiz'},
-          {active: false, text: 'Karten'},
-          {active: false, text: 'Klassiker'},
-          {active: false, text: 'Familienspiel'},
-          {active: false, text: 'Partyspiel'},
-          {active: false, text: 'Gamer\'s Games'},
-          {active: false, text: 'Wirtschaftsspiel'},
-          {active: false, text: 'Würfelspiel'},
-        ],
-        spielerzahl: 2
-      }
-    }
+  setup() {
+    console.log("setup is called")
+    let spiele = store
+    let filter =  reactive({
+      dauer: [
+        {active: true, text: 'bis 30 Min'},
+        {active: false, text: '60 Min'},
+        {active: true, text: '90 Min'},
+        {active: true, text: '120+ Min'},
+      ],
+      kategorie: [
+        {active: false, text: 'Strategie'},
+        {active: false, text: 'Builder'},
+        {active: false, text: 'Knobel'},
+        {active: false, text: 'Quiz'},
+        {active: false, text: 'Karten'},
+        {active: false, text: 'Klassiker'},
+        {active: false, text: 'Familienspiel'},
+        {active: false, text: 'Partyspiel'},
+        {active: false, text: 'Gamer\'s Games'},
+        {active: false, text: 'Wirtschaftsspiel'},
+        {active: false, text: 'Würfelspiel'},
+      ]
+    });
+    return {filter, spiele}
   },
   methods: {
     navigate(index) {
       this.$router.push({
-        name: this.routeNames.dialog,
-        params: {userId: index}
+        name: routeNames.dialog,
+        params: {spielId: index}
       })
     },
   },
