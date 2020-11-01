@@ -28,8 +28,9 @@ const routes = [
     },
     {
         name: names.dialog,
-        path: '/dialog/:userId',
-        component: SpielDetail
+        path: '/dialog/:spielId',
+        component: SpielDetail,
+        props: true
     }
 ]
 
