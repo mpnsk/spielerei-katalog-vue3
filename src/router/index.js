@@ -3,11 +3,14 @@ import Home from '../views/Home.vue'
 import SpielOverview from '../components/SpielOverview'
 import SpielDetail from '../components/SpielDetail'
 import About from '../components/About'
+// eslint-disable-next-line no-unused-vars
+import {reactive, ref} from "@vue/reactivity";
 
 const names = {
     index: 'index',
     users: 'users',
     dialog: 'dialog',
+    overview: 'overview',
     about: 'about'
 }
 const routes = [
@@ -17,7 +20,7 @@ const routes = [
         component: Home
     },
     {
-        name: names.users,
+        name: names.overview,
         path: '/',
         component: SpielOverview
     },
@@ -48,4 +51,4 @@ const router = createRouter({
 })
 
 export default router
-export const routeNames = names
+export const routeNames = reactive(names)
