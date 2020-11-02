@@ -22,9 +22,9 @@
       </div>
       <div class="col-span-1 sm:row-start-3 sm:col-span-1">
         <ul>
-          <li>{{ spiel.duration }} | {{ display(spiel.duration) }} Min</li>
-          <li>{{ spiel.age }} | {{ display(spiel.age) }}</li>
-          <li>{{ spiel.players }} | {{ display(spiel.players) }}</li>
+          <li>{{ display(spiel.duration) }} Min</li>
+          <li>{{ display(spiel.age) }}</li>
+          <li>{{ display(spiel.players) }}</li>
         </ul>
       </div>
       <div class="col-span-2 sm:col-start-3 sm:row-start-2">
