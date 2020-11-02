@@ -1,42 +1,40 @@
 <template>
   <div>
-
     <router-link :to="{name: routeNames.dialog, params: { spielId: spielId - 1 }  }">←</router-link>
     <router-link :to="{name: routeNames.dialog, params: { spielId: Number(spielId) + 1 }  }">→</router-link>
 
+    <div v-if="spiel !== undefined">
 
-    <div v-if="spiel != undefined"
-         class="
+            <div>
+              <h1>{{ spiel.name }} {{ spiel.released ? '(' + spiel.released + ')' : '' }}</h1>
+            </div>
+      <div
+          class="
           grid
-<!--          grid-flow-row-->
           place-content-center
-<!--          gap-1-->
           m-5
     ">
-      <div class="col-span-5">
-        <h1>{{ spiel.name }} {{ spiel.released ? '(' + spiel.released + ')' : '' }}</h1>
-      </div>
-      <div class="col-span-1 sm:row-start-2 sm:col-span-1">
-        <img
-            :src="spiel.coverUrl"
-            alt="this is an image!"
-        />
-      </div>
-      <div class="col-span-1 sm:row-start-3 sm:col-span-1">
-        <ul>
-          <li>{{ display(spiel.duration) }} Min</li>
-          <li>{{ display(spiel.age) }}</li>
-          <li>{{ display(spiel.players) }}</li>
-        </ul>
-      </div>
-      <div class="col-span-2 sm:col-start-3 sm:row-start-2">
-        <div class="sm:max-w-4xl">
+        <div class="col-span-1 sm:row-start-1 sm:col-span-1">
+          <img
+              :src="spiel.coverUrl"
+              alt="this is an image!"
+          />
+        </div>
+        <div class="col-span-1 sm:row-start-2 sm:col-span-1 place-self-center">
+          <ul>
+            <li>{{ display(spiel.duration) }} Min</li>
+            <li>{{ display(spiel.age) }}</li>
+            <li>{{ display(spiel.players) }}</li>
+          </ul>
+        </div>
+        <div class="col-span-2 sm:col-start-3 sm:row-start-1 sm:row-span-2" v-if="spiel.description !== undefined">
+          <div class="sm:max-w-3xl">
 
-          {{ spiel.description != undefined ? "Beschreibung kommt noch" : spiel.description }}
+            {{ spiel.description }}
+          </div>
         </div>
       </div>
     </div>
-
 
   </div>
 </template>
