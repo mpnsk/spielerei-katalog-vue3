@@ -13,7 +13,9 @@
 <!--          gap-1-->
           m-5
     ">
-      <div class="col-span-5">{{ spiel.name }} {{ spiel.released ? '(' + spiel.released + ')' : '' }}</div>
+      <div class="col-span-5">
+        <h1>{{ spiel.name }} {{ spiel.released ? '(' + spiel.released + ')' : '' }}</h1>
+      </div>
       <div class="col-span-1 sm:row-start-2 sm:col-span-1">
         <img
             :src="spiel.coverUrl"
