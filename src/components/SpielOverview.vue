@@ -1,6 +1,8 @@
 <template>
   <div style="padding: 15px">
-    <div id="filter" class="space-y-1">
+    <div id="filter" class="space-y-1
+
+">
 
 
       <div id="spielname" class="">
@@ -54,24 +56,11 @@
           />
           <button class="p-1 bg-gray-200" @click="filter.spielerzahl++">+</button>
         </label></div>
-      <div id="spiele">
-        <div v-for="(spiel, index) in spiele" :key="index" :id="'spiel-' + index" class="my-card"
+      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 place-items-center
+bg-gray-800">
+        <Card :spiel="spiel" v-for="(spiel, index) in spiele" :key="index" :id="'spiel-' + index" class="my-card"
              @click="navigate(index)">
-          <img
-              :data-src="spiel.coverUrl"
-              alt="this is an image!"
-              class="lazyload"
-              style="height: 150px"
-          />
-          <div class="absolute-bottom text-h6">
-            {{ spiel.name }}
-          </div>
-          <div>
-            Spieler: {{ spiel.spielerAnzahl }} Spieler <br>
-            Dauer: {{ spiel.dauer }} <br>
-            Alter: {{ spiel.mindestAlter }}
-          </div>
-        </div>
+        </Card>
       </div>
     </div>
   </div>
@@ -82,6 +71,7 @@ import store from '../GameStore'
 import {routeNames} from '@/router'
 // eslint-disable-next-line no-unused-vars
 import {computed, reactive, ref} from "@vue/reactivity";
+import Card from "@/components/Card";
 
 export default {
   setup() {
@@ -118,13 +108,16 @@ export default {
       })
     },
   },
+  components: {
+    Card
+  }
 }
 </script>
 <style scoped>
 .my-card {
-  height: 100%;
-  max-width: 500px;
-  padding: 15px;
+  /*height: 100%;*/
+  /*max-width: 500px;*/
+  /*padding: 15px;*/
 }
 
 .my-card:hover {
