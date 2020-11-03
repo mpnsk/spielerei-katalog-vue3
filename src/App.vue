@@ -1,5 +1,4 @@
 <template>
-  <div id="app">
     <div id="nav">
       <router-link :to="{name: routeNames.overview }">List</router-link>
       |
@@ -8,7 +7,6 @@
       <router-link :to="{name: routeNames.about }">About</router-link>
     </div>
     <router-view/>
-  </div>
 </template>
 <script>
 import {routeNames} from './router'
