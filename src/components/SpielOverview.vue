@@ -56,8 +56,7 @@
           />
           <button class="p-1 bg-gray-200" @click="filter.spielerzahl++">+</button>
         </label></div>
-      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 place-items-center
-bg-gray-800">
+      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 place-items-center">
         <Card :spiel="spiel" v-for="(spiel, index) in spiele" :key="index" :id="'spiel-' + index" class="my-card"
              @click="navigate(index)">
         </Card>
