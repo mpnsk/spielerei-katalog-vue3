@@ -15,18 +15,18 @@ let funs = {
         let byMin = this.sortByMin(r1,r2);
         let lower = byMin.lower
         let upper = byMin.upper
-        return ((lower.min < upper.min &&
-            lower.max > upper.min)
+        return ((lower.min <= upper.min &&
+            lower.max >= upper.min)
             ||
-            (lower.min < upper.max &&
-                lower.max > upper.max))
+            (lower.min <= upper.max &&
+                lower.max >= upper.max))
     },
     rangeContain(r1, r2) {
         let byMin = this.sortByMin(r1,r2);
         let smaller = byMin.upper
         let bigger = byMin.lower
-        return bigger.min < smaller.min &&
-            bigger.max > smaller.max
+        return bigger.min <= smaller.min &&
+            bigger.max >= smaller.max
     }
 
 };

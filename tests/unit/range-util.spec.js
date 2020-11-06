@@ -10,6 +10,10 @@ describe('range intersect', function () {
         var intersect = r.rangeIntersect({min: 1, max: 4}, {min: 3, max: 6})
         assert.strictEqual(intersect, true)
     })
+    it('should work on point intersect', function () {
+        var intersect = r.rangeIntersect({min: 1, max: 4}, {min: 4, max: 6})
+        assert.strictEqual(intersect, true)
+    })
 })
 describe('range contain', function () {
     it('should work on contain', function () {
