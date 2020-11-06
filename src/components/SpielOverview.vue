@@ -103,20 +103,19 @@ export default {
     const filteredGames = computed(() => {
       return spiele.filter(spiel => {
         let duration = spiel.duration;
-        let noFilterSelected = true;
-        if ((filter.dauer[0].active || filter.dauer[1] || filter.dauer[2] || filter.dauer[3])) noFilterSelected = false;
+        let anyFilterSelected = filter.dauer[0].active || filter.dauer[1].active || filter.dauer[2].active || filter.dauer[3].active;
         if (duration == undefined) {
           console.log("undefined duration " + spiel.name)
-          return noFilterSelected
+          return !anyFilterSelected
         }
         if (duration.min === undefined){
           console.log("undefined duration.min " + spiel.name)
           console.log(spiel)
-          return noFilterSelected
+          return !anyFilterSelected
         }
         else {
           debugger;
-          return noFilterSelected || (filter.dauer[0].active && range.rangeIntersect(duration, {min: 0, max: 30}))
+          return !anyFilterSelected || (filter.dauer[0].active && range.rangeIntersect(duration, {min: 0, max: 30}))
         }
         // ||
         // (filter.dauer[1].active && spiel.dauer.min >= 30 && spiel) ||
