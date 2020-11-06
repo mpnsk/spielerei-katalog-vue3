@@ -56,11 +56,8 @@ export default {
     console.log(props.spielId)
     let spiel = computed(() => {
       let id = props.spielId;
-      if (store.length >= id) {
-        return store[id]
-      } else {
-        return null
-      }
+      return store.asMap.get(id)
+
     })
     return {spiel, routeNames}
   },

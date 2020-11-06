@@ -3,7 +3,7 @@
     <div class="container flex-1">
 
       <img
-          :data-src="spiel.coverUrl"
+          v-bind:src="spiel.coverUrl"
           alt="this is an image!"
           class="lazyload place-self-center object-center "
       />

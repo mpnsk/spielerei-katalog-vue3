@@ -56,10 +56,10 @@
           />
           <button class="p-1 bg-gray-200" @click="filter.spielerzahl++">+</button>
         </label></div>
-       {{ filteredGames.length}} Spiele gefunden
+      {{ filteredGames.length }} Spiele gefunden
       <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 place-items-center">
         <Card :spiel="spiel" v-for="(spiel, index) in filteredGames" :key="index" :id="'spiel-' + index" class="my-card"
-              @click="navigate(index)">
+              @click="navigate(spiel)">
         </Card>
       </div>
     </div>
@@ -77,13 +77,14 @@ import range from '../functions/rangeUtil'
 export default {
   setup() {
     console.log("setup is called")
-    let spiele = store
+    debugger;
+    let spiele = store.asArray
     let filter = reactive({
       dauer: [
-        {active: true, text: 'bis 30 Min'},
+        {active: false, text: 'bis 30 Min'},
         {active: false, text: '60 Min'},
-        {active: true, text: '90 Min'},
-        {active: true, text: '120+ Min'},
+        {active: false, text: '90 Min'},
+        {active: false, text: '120+ Min'},
       ],
       kategorie: [
         {active: false, text: 'Strategie'},
@@ -101,6 +102,7 @@ export default {
     });
 
     const filteredGames = computed(() => {
+      debugger;
       return spiele.filter(spiel => {
         let duration = spiel.duration;
         let anyFilterSelected = filter.dauer[0].active || filter.dauer[1].active || filter.dauer[2].active || filter.dauer[3].active;
@@ -108,13 +110,11 @@ export default {
           console.log("undefined duration " + spiel.name)
           return !anyFilterSelected
         }
-        if (duration.min === undefined){
+        if (duration.min === undefined) {
           console.log("undefined duration.min " + spiel.name)
           console.log(spiel)
           return !anyFilterSelected
-        }
-        else {
-          debugger;
+        } else {
           return !anyFilterSelected || (filter.dauer[0].active && range.rangeIntersect(duration, {min: 0, max: 30}))
         }
         // ||
@@ -128,10 +128,10 @@ export default {
     return {filter, spiele, filteredGames}
   },
   methods: {
-    navigate(index) {
+    navigate(spiel) {
       this.$router.push({
         name: routeNames.dialog,
-        params: {spielId: index}
+        params: {spielId: spiel.name}
       })
     }
     ,
