@@ -46,7 +46,7 @@
         </div>
       </div>
       <div id="spielerzahl">
-        <label> Spielerzahl: {{filter.spielerzahl}}
+        <label> Spielerzahl: {{ filter.spielerzahl }}
           <button class="p-1 bg-gray-200" @click="filter.spielerzahl--">-</button>
           <input
               type="range"
@@ -56,9 +56,10 @@
           />
           <button class="p-1 bg-gray-200" @click="filter.spielerzahl++">+</button>
         </label></div>
+       {{ filteredGames.length}} Spiele gefunden
       <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 place-items-center">
-        <Card :spiel="spiel" v-for="(spiel, index) in spiele" :key="index" :id="'spiel-' + index" class="my-card"
-             @click="navigate(index)">
+        <Card :spiel="spiel" v-for="(spiel, index) in filteredGames" :key="index" :id="'spiel-' + index" class="my-card"
+              @click="navigate(index)">
         </Card>
       </div>
     </div>
@@ -69,14 +70,15 @@
 import store from '../GameStore'
 import {routeNames} from '@/router'
 // eslint-disable-next-line no-unused-vars
-import {computed, reactive, ref} from "@vue/reactivity";
+import {computed, reactive} from "@vue/reactivity";
 import Card from "@/components/Card";
+import range from '../functions/rangeUtil'
 
 export default {
   setup() {
     console.log("setup is called")
     let spiele = store
-    let filter =  reactive({
+    let filter = reactive({
       dauer: [
         {active: true, text: 'bis 30 Min'},
         {active: false, text: '60 Min'},
@@ -97,7 +99,34 @@ export default {
         {active: false, text: 'Würfelspiel'},
       ]
     });
-    return {filter, spiele}
+
+    const filteredGames = computed(() => {
+      return spiele.filter(spiel => {
+        let duration = spiel.duration;
+        let noFilterSelected = true;
+        if ((filter.dauer[0].active || filter.dauer[1] || filter.dauer[2] || filter.dauer[3])) noFilterSelected = false;
+        if (duration == undefined) {
+          console.log("undefined duration " + spiel.name)
+          return noFilterSelected
+        }
+        if (duration.min === undefined){
+          console.log("undefined duration.min " + spiel.name)
+          console.log(spiel)
+          return noFilterSelected
+        }
+        else {
+          debugger;
+          return noFilterSelected || (filter.dauer[0].active && range.rangeIntersect(duration, {min: 0, max: 30}))
+        }
+        // ||
+        // (filter.dauer[1].active && spiel.dauer.min >= 30 && spiel) ||
+        // (filter.dauer[2].active && spiel.dauer.max < 30)
+
+        // return spiel.duration.max > 60
+      });
+    })
+
+    return {filter, spiele, filteredGames}
   },
   methods: {
     navigate(index) {
@@ -105,8 +134,10 @@ export default {
         name: routeNames.dialog,
         params: {spielId: index}
       })
-    },
-  },
+    }
+    ,
+  }
+  ,
   components: {
     Card
   }
