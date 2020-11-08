@@ -5,10 +5,10 @@ import store from "@/GameStore";
 let spiele = store.asArray
 let filter = reactive({
     dauer: [
-        {active: false, text: 'bis 30 Min'},
-        {active: false, text: '60 Min'},
-        {active: false, text: '90 Min'},
-        {active: false, text: '120+ Min'},
+        {active: false, text: 'bis 30 Min', min: 0, max: 30},
+        {active: false, text: '60 Min', min: 60, max: 60},
+        {active: false, text: '90 Min', min: 90, max: 90},
+        {active: false, text: '120+ Min', min: 120, max: 120},
     ],
     kategorie: [
         {active: false, text: 'Strategie'},
@@ -42,7 +42,12 @@ const filteredGames = computed(() => {
             // console.log(spiel)
             return noFilterSelected
         } else {
-            return noFilterSelected || (filter.dauer[0].active && range.rangeIntersect(duration, {min: 0, max: 30}))
+            return noFilterSelected
+                || (filter.dauer[0].active && range.rangeIntersect(duration, filter.dauer[0]))
+                || (filter.dauer[1].active && range.rangeIntersect(duration, filter.dauer[1]))
+                || (filter.dauer[2].active && range.rangeIntersect(duration, filter.dauer[2]))
+                || (filter.dauer[3].active && range.rangeIntersect(duration, filter.dauer[3]))
+
         }
         // ||
         // (filter.dauer[1].active && spiel.dauer.min >= 30 && spiel) ||
