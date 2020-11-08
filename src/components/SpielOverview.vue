@@ -1,10 +1,6 @@
 <template>
   <div style="padding: 15px">
-    <div id="filter" class="space-y-1
-
-">
-
-
+    <div id="filter" class="space-y-1">
       <div id="spielname" class="">
         <label>Titel
           <input type="text" v-model="filter.name"/>
@@ -56,13 +52,8 @@
           />
           <button class="p-1 bg-gray-200" @click="filter.spieler++">+</button>
         </label></div>
-      <!--      {{ spiele.length }} Spiele insgesamt <br>-->
       {{ filteredGames.length }} Spiele filtered<br>
-      <!--      {{ renderedGames.length }} Spiele rendered-->
-      <!--      <div v-for="(rgame, index) in renderedGames" :key="index">-->
-      <!--        {{rgame}}-->
-      <!--        {{index}}-->
-      <!--      </div>-->
+      {{ renderedGames.length }} Spiele rendered
       <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 place-items-center">
         <Card :spiel="spiel" v-for="(spiel, index) in renderedGames" :key="index" :id="spiel.name" class="my-card"
               @click="navigate(spiel)">
@@ -73,9 +64,7 @@
 </template>
 
 <script>
-import store from '../GameStore'
 import {routeNames} from '@/router'
-// eslint-disable-next-line no-unused-vars
 import {computed, reactive, ref} from "@vue/reactivity";
 import Card from "@/components/Card";
 import {onMounted, onUnmounted} from "@vue/runtime-core";
@@ -87,8 +76,6 @@ export default {
     let scrolled = 0
     const handleScroll = () => {
       let condition = (window.innerHeight + window.scrollY + 50) >= document.body.offsetHeight;
-      document.getElementById("fixed").innerHTML = window.innerHeight + " + " + window.scrollY + " >= " + document.body.offsetHeight +
-          "<br>" + condition + " " + scrolled + " times";
       if (condition) {
         scrolled++
         for (let i = 0; i < 3; i++) {
@@ -108,9 +95,7 @@ export default {
       window.removeEventListener('scroll', handleScroll)
     })
 
-
-    let loading = ref(false)
-    return {filter, filteredGames, renderedGames, loading}
+    return {filter, filteredGames, renderedGames}
   },
   methods: {
     navigate(spiel) {
