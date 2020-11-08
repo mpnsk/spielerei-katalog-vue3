@@ -54,7 +54,7 @@
         </label></div>
       {{ filteredGames.length }} Spiele filtered<br>
       {{ renderedGames.length }} Spiele rendered
-      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 place-items-center">
+      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center">
         <Card :spiel="spiel" v-for="(spiel, index) in renderedGames" :key="index" :id="spiel.name" class="my-card"
               @click="navigate(spiel)">
         </Card>
