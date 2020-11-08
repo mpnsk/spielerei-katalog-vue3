@@ -46,19 +46,25 @@
         </div>
       </div>
       <div id="spielerzahl">
-        <label> Spielerzahl: {{ filter.spielerzahl }}
-          <button class="p-1 bg-gray-200" @click="filter.spielerzahl--">-</button>
+        <label> Spielerzahl: {{ filter.spieler }}
+          <button class="p-1 bg-gray-200" @click="filter.spieler--">-</button>
           <input
               type="range"
               :min="1"
               :max="12"
-              v-model="filter.spielerzahl"
+              v-model="filter.spieler"
           />
-          <button class="p-1 bg-gray-200" @click="filter.spielerzahl++">+</button>
+          <button class="p-1 bg-gray-200" @click="filter.spieler++">+</button>
         </label></div>
-      {{ filteredGames.length }} Spiele gefunden
+      <!--      {{ spiele.length }} Spiele insgesamt <br>-->
+      {{ filteredGames.length }} Spiele filtered<br>
+      <!--      {{ renderedGames.length }} Spiele rendered-->
+      <!--      <div v-for="(rgame, index) in renderedGames" :key="index">-->
+      <!--        {{rgame}}-->
+      <!--        {{index}}-->
+      <!--      </div>-->
       <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-5 place-items-center">
-        <Card :spiel="spiel" v-for="(spiel, index) in filteredGames" :key="index" :id="'spiel-' + index" class="my-card"
+        <Card :spiel="spiel" v-for="(spiel, index) in renderedGames" :key="index" :id="spiel.name" class="my-card"
               @click="navigate(spiel)">
         </Card>
       </div>
@@ -70,62 +76,41 @@
 import store from '../GameStore'
 import {routeNames} from '@/router'
 // eslint-disable-next-line no-unused-vars
-import {computed, reactive} from "@vue/reactivity";
+import {computed, reactive, ref} from "@vue/reactivity";
 import Card from "@/components/Card";
-import range from '../functions/rangeUtil'
+import {onMounted, onUnmounted} from "@vue/runtime-core";
+import {filter, filteredGames, renderedGames} from './SpielFilter'
 
 export default {
   setup() {
-    console.log("setup is called")
-    debugger;
-    let spiele = store.asArray
-    let filter = reactive({
-      dauer: [
-        {active: false, text: 'bis 30 Min'},
-        {active: false, text: '60 Min'},
-        {active: false, text: '90 Min'},
-        {active: false, text: '120+ Min'},
-      ],
-      kategorie: [
-        {active: false, text: 'Strategie'},
-        {active: false, text: 'Builder'},
-        {active: false, text: 'Knobel'},
-        {active: false, text: 'Quiz'},
-        {active: false, text: 'Karten'},
-        {active: false, text: 'Klassiker'},
-        {active: false, text: 'Familienspiel'},
-        {active: false, text: 'Partyspiel'},
-        {active: false, text: 'Gamer\'s Games'},
-        {active: false, text: 'Wirtschaftsspiel'},
-        {active: false, text: 'Würfelspiel'},
-      ]
-    });
-
-    const filteredGames = computed(() => {
-      debugger;
-      return spiele.filter(spiel => {
-        let duration = spiel.duration;
-        let anyFilterSelected = filter.dauer[0].active || filter.dauer[1].active || filter.dauer[2].active || filter.dauer[3].active;
-        if (duration == undefined) {
-          console.log("undefined duration " + spiel.name)
-          return !anyFilterSelected
+    console.log("filteredGames");
+    let scrolled = 0
+    const handleScroll = () => {
+      let condition = (window.innerHeight + window.scrollY + 50) >= document.body.offsetHeight;
+      document.getElementById("fixed").innerHTML = window.innerHeight + " + " + window.scrollY + " >= " + document.body.offsetHeight +
+          "<br>" + condition + " " + scrolled + " times";
+      if (condition) {
+        scrolled++
+        for (let i = 0; i < 3; i++) {
+          let filteredGame = filteredGames.value[renderedGames.length + i];
+          renderedGames.push(filteredGame)
         }
-        if (duration.min === undefined) {
-          console.log("undefined duration.min " + spiel.name)
-          console.log(spiel)
-          return !anyFilterSelected
-        } else {
-          return !anyFilterSelected || (filter.dauer[0].active && range.rangeIntersect(duration, {min: 0, max: 30}))
-        }
-        // ||
-        // (filter.dauer[1].active && spiel.dauer.min >= 30 && spiel) ||
-        // (filter.dauer[2].active && spiel.dauer.max < 30)
+      }
+    }
 
-        // return spiel.duration.max > 60
-      });
+    // this will register the event when the component is mounted on the DOM
+    onMounted(() => {
+      window.addEventListener('scroll', handleScroll)
     })
 
-    return {filter, spiele, filteredGames}
+    // We then unregister the listener when the component is removed from the DOM
+    onUnmounted(() => {
+      window.removeEventListener('scroll', handleScroll)
+    })
+
+
+    let loading = ref(false)
+    return {filter, filteredGames, renderedGames, loading}
   },
   methods: {
     navigate(spiel) {
