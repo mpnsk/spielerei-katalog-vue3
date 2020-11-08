@@ -80,7 +80,8 @@ export default {
         scrolled++
         for (let i = 0; i < 3; i++) {
           let filteredGame = filteredGames.value[renderedGames.length + i];
-          renderedGames.push(filteredGame)
+          if (filteredGame !== undefined)
+            renderedGames.push(filteredGame)
         }
       }
     }
