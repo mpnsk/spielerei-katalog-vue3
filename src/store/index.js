@@ -7,11 +7,11 @@ let store = createStore({
         }
     },
     mutations: {
-        create: (state, neueSpiele) => {
-            console.log("vuex is working")
-            state.spiele = state.spiele.concat(neueSpiele)
-        }
+        load: (state, neueSpiele) => state.spiele = state.spiele.concat(neueSpiele)
     },
+    // getters: {
+    //     spiele: (state) => state.spiele
+    // },
     devtools: true
 });
 export default store
