@@ -1,8 +1,7 @@
 import {computed, reactive} from "@vue/reactivity";
 import range from "@/functions/rangeUtil";
-import store from "@/GameStore";
 
-let spiele = store.asArray
+let games = reactive([])
 let filter = reactive({
     dauer: [
         {active: false, text: 'bis 30 Min', min: 0, max: 30},
@@ -30,7 +29,7 @@ let filter = reactive({
 const renderedGames = reactive([])
 const filteredGames = computed(() => {
 
-    let afterFilter = spiele.filter(spiel => {
+    let afterFilter = games.filter(spiel => {
         let duration = spiel.duration;
         let anyFilterSelected = filter.dauer[0].active || filter.dauer[1].active || filter.dauer[2].active || filter.dauer[3].active;
         let noFilterSelected = !anyFilterSelected;
@@ -62,6 +61,5 @@ const filteredGames = computed(() => {
     }
     return afterFilter;
 })
-console.log(filteredGames.size)
 
 export {filter, renderedGames, filteredGames}

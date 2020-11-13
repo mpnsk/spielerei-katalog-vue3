@@ -18,10 +18,8 @@
                inactiveTag: !data.active,
              }"
           >
-            <nobr>
-              <input type="checkbox" v-model="data.active">
-              {{ data.text }}
-            </nobr>
+            <input type="checkbox" v-model="data.active">
+            {{ data.text }}
           </label>
         </div>
       </div>
@@ -34,10 +32,8 @@
                inactiveTag: !data.active,
              }"
           >
-            <nobr>
-              <input type="checkbox" v-model="data.active">
-              {{ data.text }}
-            </nobr>
+            <input type="checkbox" v-model="data.active">
+            {{ data.text }}
           </label>
         </div>
       </div>
@@ -54,11 +50,12 @@
         </label></div>
       {{ filteredGames.length }} Spiele filtered<br>
       {{ renderedGames.length }} Spiele rendered
-      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center" v-if="renderedGames!==[]">
-        <Card :spiel="spiel" v-for="(spiel, index) in renderedGames" :key="index" :id="spiel.name" class="my-card"
-              @click="navigate(spiel)">
-        </Card>
-      </div>
+<!--      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center"-->
+<!--           v-if="renderedGames.value == undefined">-->
+<!--        <Card :spiel="spiel" v-for="(spiel, index) in renderedGames" :key="index" :id="spiel.name" class="my-card"-->
+<!--              @click="navigate(spiel)">-->
+<!--        </Card>-->
+<!--      </div>-->
     </div>
   </div>
 </template>
@@ -72,7 +69,6 @@ import {filter, filteredGames, renderedGames} from './SpielFilter'
 
 export default {
   setup() {
-    console.log("filteredGames");
     let scrolled = 0
     const handleScroll = () => {
       let condition = (window.innerHeight + window.scrollY + 50) >= document.body.offsetHeight;
@@ -96,6 +92,8 @@ export default {
       window.removeEventListener('scroll', handleScroll)
     })
 
+    console.log("filteredGames")
+    console.log(filteredGames.value.length === 0)
     return {filter, filteredGames, renderedGames}
   },
   methods: {

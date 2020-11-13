@@ -41,7 +41,6 @@
 
 <script>
 import {routeNames} from './../router'
-import store from '../GameStore'
 // eslint-disable-next-line no-unused-vars
 import {computed, ref} from "@vue/reactivity";
 // eslint-disable-next-line no-unused-vars
@@ -53,10 +52,11 @@ export default {
     spielId: String,
   },
   setup(props) {
+    let spiele = []
     console.log(props.spielId)
     let spiel = computed(() => {
       let id = props.spielId;
-      return store.asMap.get(id)
+      return spiele.asMap.get(id)
 
     })
     return {spiel, routeNames}
