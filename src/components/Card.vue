@@ -4,7 +4,7 @@
 
       <img
           v-bind:data-src="spiel.coverUrl"
-          alt="this is an image!"
+          alt="Bild läd.."
           class="lazyload place-self-center object-center "
       />
     </div>
