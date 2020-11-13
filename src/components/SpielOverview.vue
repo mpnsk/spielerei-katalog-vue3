@@ -49,13 +49,15 @@
           <button class="p-1 bg-gray-200" @click="filter.spieler++">+</button>
         </label></div>
       {{ filteredGames.length }} Spiele filtered<br>
-      {{ renderedGames.length }} Spiele rendered
-<!--      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center"-->
-<!--           v-if="renderedGames.value == undefined">-->
-<!--        <Card :spiel="spiel" v-for="(spiel, index) in renderedGames" :key="index" :id="spiel.name" class="my-card"-->
-<!--              @click="navigate(spiel)">-->
-<!--        </Card>-->
-<!--      </div>-->
+      {{ renderedGames.length }} Spiele rendered<br>
+      computedSpiele: {{ computedSpiele.length}}
+
+            <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center"
+                 >
+              <Card :spiel="spiel" v-for="(spiel, index) in computedSpiele" :key="index" :id="spiel.name" class="my-card"
+                    @click="navigate(spiel)">
+              </Card>
+            </div>
     </div>
   </div>
 </template>
@@ -66,9 +68,12 @@ import {computed, reactive, ref} from "@vue/reactivity";
 import Card from "@/components/Card";
 import {onMounted, onUnmounted} from "@vue/runtime-core";
 import {filter, filteredGames, renderedGames} from './SpielFilter'
+import {useStore} from "vuex";
 
 export default {
   setup() {
+    let store = useStore();
+    let spieleGesamt = computed(() => { return store.state.spiele})
     let scrolled = 0
     const handleScroll = () => {
       let condition = (window.innerHeight + window.scrollY + 50) >= document.body.offsetHeight;
@@ -94,7 +99,7 @@ export default {
 
     console.log("filteredGames")
     console.log(filteredGames.value.length === 0)
-    return {filter, filteredGames, renderedGames}
+    return {filter, filteredGames, renderedGames, computedSpiele: spieleGesamt}
   },
   methods: {
     navigate(spiel) {
