@@ -31,5 +31,10 @@ let filterNachDauer = (spiele, dauerArray) => {
     }
     return result
 }
+let filterNachName = (spiele, input) => {
+    console.log("filterNachName")
+    if (input==="") return spiele
+    return spiele.filter(spiel=> spiel.name.toLowerCase().includes(input.toLowerCase()))
+}
 
-export {filterNachSpieler, filterNachDauer}
+export {filterNachSpieler, filterNachDauer, filterNachName}

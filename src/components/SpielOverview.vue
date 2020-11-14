@@ -48,47 +48,40 @@
           </label>
         </div>
       </div>
-      {{filterDauer.length}}<br>
+      {{ filterDauer.length }}<br>
 
 
-            <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center"
-                 >
-              <Card :spiel="spiel" v-for="(spiel, index) in filterDauer" :key="index" :id="spiel.name" class="my-card"
-                    @click="navigate(spiel)">
-              </Card>
-            </div>
+      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center"
+      >
+        <Card :spiel="spiel" v-for="(spiel, index) in filterDauer" :key="index" :id="spiel.name" class="my-card"
+              @click="navigate(spiel)">
+        </Card>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import {routeNames} from '@/router'
-import {computed, reactive, ref} from "@vue/reactivity";
+import {computed} from "@vue/reactivity";
 import Card from "@/components/Card";
 import {onMounted, onUnmounted} from "@vue/runtime-core";
-import {dauer, filter, filteredGames, renderedGames, alleFilter} from './SpielFilter'
+import {dauer, filter, filteredGames, renderedGames} from './SpielFilter'
 import {useStore} from "vuex";
-import range from "@/functions/rangeUtil";
-import {filterNachDauer, filterNachSpieler} from "@/components/FilterFunctions";
+import {filterNachDauer, filterNachName, filterNachSpieler} from "@/components/FilterFunctions";
 
 export default {
   setup() {
-
     let store = useStore();
-    let filterSpieler = computed(()=>{
-      // console.log("filter nach spieler");
+
+    let filterName = computed(() => {
       let spiele = store === undefined ? [] : store.state.spiele
-      let result = filterNachSpieler(spiele, filter.spieler);
-      return result
+      return filterNachName(spiele, filter.name)
     })
 
-    let filterDauer = computed(() => {
-      // console.log("filter nach dauer")
-      let spiele = filterSpieler.value
-      // let spiele = store === undefined ? [] : store.state.spiele
-      let result = filterNachDauer(spiele, dauer)
-      return result
-    });
+    let filterSpieler = computed(() => filterNachSpieler(filterName.value, filter.spieler))
+
+    let filterDauer = computed(() => filterNachDauer(filterSpieler.value, dauer))
 
     let scrolled = 0
     const handleScroll = () => {
@@ -112,7 +105,6 @@ export default {
       filter,
       dauer,
       filterDauer,
-      filterSpieler
     }
   },
   methods: {
@@ -122,10 +114,10 @@ export default {
         params: {spielId: spiel.name}
       })
     },
-    neueDauer(){
+    neueDauer() {
     },
   },
-  data: ()=> {
+  data: () => {
     return {
       angezeigteSpiele: []
     }
