@@ -12,6 +12,7 @@ let funs = {
         return {lower, upper}
     },
     rangeIntersect(r1, r2) {
+        if (r1 == undefined || r2 == undefined) return true
         let byMin = this.sortByMin(r1,r2);
         let lower = byMin.lower
         let upper = byMin.upper

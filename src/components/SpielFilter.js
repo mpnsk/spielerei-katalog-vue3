@@ -1,14 +1,19 @@
 import {computed, reactive} from "@vue/reactivity";
 import range from "@/functions/rangeUtil";
+import {useStore} from "vuex";
+
+// let computedSpiele = computed(() => store.getters.spiele);
 
 let games = reactive([])
+
+
+let dauer = reactive([
+    {active: false, text: 'bis 30 Min', min: 0, max: 30},
+    {active: false, text: '60 Min', min: 60, max: 60},
+    {active: false, text: '90 Min', min: 90, max: 90},
+    {active: false, text: '120+ Min', min: 120, max: 120},
+])
 let filter = reactive({
-    dauer: [
-        {active: false, text: 'bis 30 Min', min: 0, max: 30},
-        {active: false, text: '60 Min', min: 60, max: 60},
-        {active: false, text: '90 Min', min: 90, max: 90},
-        {active: false, text: '120+ Min', min: 120, max: 120},
-    ],
     kategorie: [
         {active: false, text: 'Strategie'},
         {active: false, text: 'Builder'},
@@ -61,5 +66,4 @@ const filteredGames = computed(() => {
     }
     return afterFilter;
 })
-
-export {filter, renderedGames, filteredGames}
+export {filter, renderedGames, filteredGames, dauer}

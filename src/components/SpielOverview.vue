@@ -6,11 +6,22 @@
           <input type="text" v-model="filter.name"/>
         </label>
       </div>
+      <div id="spielerzahl">
+        <label> Spielerzahl: {{ filter.spieler }}
+          <button class="p-1 bg-gray-200" @click="filter.spieler--">-</button>
+          <input
+              type="range"
+              :min="1"
+              :max="12"
+              v-model="filter.spieler"
+          />
+          <button class="p-1 bg-gray-200" @click="filter.spieler++">+</button>
+        </label></div>
       <div id="spieldauer" class="space-x-1 space-y-1">
         <label>
           Spieldauer 🕘
         </label>
-        <div v-for="(data, index) in filter.dauer" :key="index" class="inline-block">
+        <div v-for="(data, index) in dauer" :key="index" class="inline-block">
           <label
               v-bind:class="{
                tagBase: true,
@@ -37,24 +48,12 @@
           </label>
         </div>
       </div>
-      <div id="spielerzahl">
-        <label> Spielerzahl: {{ filter.spieler }}
-          <button class="p-1 bg-gray-200" @click="filter.spieler--">-</button>
-          <input
-              type="range"
-              :min="1"
-              :max="12"
-              v-model="filter.spieler"
-          />
-          <button class="p-1 bg-gray-200" @click="filter.spieler++">+</button>
-        </label></div>
-      {{ filteredGames.length }} Spiele filtered<br>
-      {{ renderedGames.length }} Spiele rendered<br>
-      computedSpiele: {{ computedSpiele.length}}
+      {{filterDauer.length}}<br>
+
 
             <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center"
                  >
-              <Card :spiel="spiel" v-for="(spiel, index) in computedSpiele" :key="index" :id="spiel.name" class="my-card"
+              <Card :spiel="spiel" v-for="(spiel, index) in filterDauer" :key="index" :id="spiel.name" class="my-card"
                     @click="navigate(spiel)">
               </Card>
             </div>
@@ -67,13 +66,30 @@ import {routeNames} from '@/router'
 import {computed, reactive, ref} from "@vue/reactivity";
 import Card from "@/components/Card";
 import {onMounted, onUnmounted} from "@vue/runtime-core";
-import {filter, filteredGames, renderedGames} from './SpielFilter'
+import {dauer, filter, filteredGames, renderedGames, alleFilter} from './SpielFilter'
 import {useStore} from "vuex";
+import range from "@/functions/rangeUtil";
+import {filterNachDauer, filterNachSpieler} from "@/components/FilterFunctions";
 
 export default {
   setup() {
+
     let store = useStore();
-    let spieleGesamt = computed(() => { return store.state.spiele})
+    let filterSpieler = computed(()=>{
+      // console.log("filter nach spieler");
+      let spiele = store === undefined ? [] : store.state.spiele
+      let result = filterNachSpieler(spiele, filter.spieler);
+      return result
+    })
+
+    let filterDauer = computed(() => {
+      // console.log("filter nach dauer")
+      let spiele = filterSpieler.value
+      // let spiele = store === undefined ? [] : store.state.spiele
+      let result = filterNachDauer(spiele, dauer)
+      return result
+    });
+
     let scrolled = 0
     const handleScroll = () => {
       let condition = (window.innerHeight + window.scrollY + 50) >= document.body.offsetHeight;
@@ -86,20 +102,18 @@ export default {
         }
       }
     }
-
-    // this will register the event when the component is mounted on the DOM
     onMounted(() => {
       window.addEventListener('scroll', handleScroll)
     })
-
-    // We then unregister the listener when the component is removed from the DOM
     onUnmounted(() => {
       window.removeEventListener('scroll', handleScroll)
     })
-
-    console.log("filteredGames")
-    console.log(filteredGames.value.length === 0)
-    return {filter, filteredGames, renderedGames, computedSpiele: spieleGesamt}
+    return {
+      filter,
+      dauer,
+      filterDauer,
+      filterSpieler
+    }
   },
   methods: {
     navigate(spiel) {
@@ -107,10 +121,15 @@ export default {
         name: routeNames.dialog,
         params: {spielId: spiel.name}
       })
+    },
+    neueDauer(){
+    },
+  },
+  data: ()=> {
+    return {
+      angezeigteSpiele: []
     }
-    ,
-  }
-  ,
+  },
   components: {
     Card
   }
