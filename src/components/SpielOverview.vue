@@ -3,7 +3,8 @@
     <div id="filter" class="space-y-1">
       <div id="spielname" class="">
         <label>Titel
-          <input type="text" v-model="filter.name"/>
+          <input type="text"
+                 v-model="filter.name"/>
         </label>
       </div>
       <div id="spielerzahl">
@@ -50,10 +51,8 @@
       </div>
       {{ filterDauer.length }}<br>
 
-
-      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center"
-      >
-        <Card :spiel="spiel" v-for="(spiel, index) in filterDauer" :key="index" :id="spiel.name" class="my-card"
+      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center">
+        <Card :spiel="spiel" v-for="(spiel, index) in filterDauer" :key="spiel" :id="index" class="my-card"
               @click="navigate(spiel)">
         </Card>
       </div>
@@ -63,25 +62,54 @@
 
 <script>
 import {routeNames} from '@/router'
-import {computed} from "@vue/reactivity";
+import {computed, reactive} from "@vue/reactivity";
 import Card from "@/components/Card";
-import {onMounted, onUnmounted} from "@vue/runtime-core";
+import {onMounted, onUnmounted, watchEffect} from "@vue/runtime-core";
 import {dauer, filter, filteredGames, renderedGames} from './SpielFilter'
 import {useStore} from "vuex";
 import {filterNachDauer, filterNachName, filterNachSpieler} from "@/components/FilterFunctions";
+import useDebounce from "@/components/useDebounce";
+import {debounce} from "@/components/Util";
 
 export default {
   setup() {
     let store = useStore();
 
+
+    let unoCount = arr => {
+      let unos = arr.filter(({name}) => name.toLowerCase().includes("uno"));
+      let length = unos.length;
+      console.log("uno count " + length);
+      return length
+    }
+
+    watchEffect(() => {
+      console.log("fitler.name " + filter.name);
+      console.log("filter.nameDebounced" + filter.nameDebounced);
+      debounce(() => {
+            filter.nameDebounced = filter.name
+          }, 800
+      )()
+    });
+
     let filterName = computed(() => {
       let spiele = store === undefined ? [] : store.state.spiele
-      return filterNachName(spiele, filter.name)
+      let result = filterNachName(spiele, filter.nameDebounced);
+      unoCount(result)
+      return result
     })
 
-    let filterSpieler = computed(() => filterNachSpieler(filterName.value, filter.spieler))
+    let filterSpieler = computed(() => {
+      let result = filterNachSpieler(filterName.value, filter.spieler);
+      unoCount(result)
+      return result;
+    })
 
-    let filterDauer = computed(() => filterNachDauer(filterSpieler.value, dauer))
+    let filterDauer = computed(() => {
+      let result = filterNachDauer(filterSpieler.value, dauer);
+      unoCount(result)
+      return result;
+    })
 
     let scrolled = 0
     const handleScroll = () => {

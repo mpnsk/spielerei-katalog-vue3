@@ -28,7 +28,8 @@ let filter = reactive({
         {active: false, text: 'Würfelspiel'},
     ],
     spieler: 4,
-    name: ""
+    name: "",
+    nameDebounced: ""
 });
 
 const renderedGames = reactive([])

@@ -16,11 +16,11 @@ let filterNachSpieler = (spiele, n) => {
 let filterNachDauer = (spiele, dauerArray) => {
     console.log("filterNachDauer");
     let aktiveFilter = dauerArray.filter(({active}) => active)
-    if (aktiveFilter.length===0) return spiele
+    if (aktiveFilter.length === 0) return spiele
     let result = []
-    for(let spiel of spiele) {
+    for (let spiel of spiele) {
         let getroffen = false
-        for (let f of aktiveFilter){
+        for (let f of aktiveFilter) {
             if (range.rangeIntersect(spiel.duration, f)) {
                 getroffen = true
             }
@@ -33,8 +33,8 @@ let filterNachDauer = (spiele, dauerArray) => {
 }
 let filterNachName = (spiele, input) => {
     console.log("filterNachName")
-    if (input==="") return spiele
-    return spiele.filter(spiel=> spiel.name.toLowerCase().includes(input.toLowerCase()))
+    if (input === "") return spiele
+    return spiele.filter(spiel => spiel.name.toLowerCase().includes(input.toLowerCase()))
 }
 
 export {filterNachSpieler, filterNachDauer, filterNachName}
