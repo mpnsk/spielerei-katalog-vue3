@@ -50,7 +50,7 @@
         </div>
       </div>
       {{ filterDauer.length }}<br>
-      {{angezeigteSpieleAnzahl}}
+<!--      {{angezeigteSpieleAnzahl}}-->
 
       <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center">
         <Card :spiel="spiel" v-for="(spiel, index) in angezeigteSpiele" :key="spiel" :id="index" class="my-card"
@@ -104,8 +104,10 @@ export default {
     }
 
     watchEffect(() => {
+      let importantTempVariablePromptingVueToActuallyDoAnything = filter.name;
       debounce(() => {
-            filter.nameDebounced = filter.name
+            filter.nameDebounced = importantTempVariablePromptingVueToActuallyDoAnything
+            console.log("le debounce");
           }, 800
       )()
     });
