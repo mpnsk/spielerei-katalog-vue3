@@ -40,19 +40,20 @@
           <label
               v-bind:class="{
                tagBase: true,
-               activeTag: selektierteKategorien[data],
-               inactiveTag: !selektierteKategorien[data],
+               activeTag: selektierteKategorien[index],
+               inactiveTag: !selektierteKategorien[index],
              }"
           >
-            <input type="checkbox" v-model="selektierteKategorien[data]">
-            {{ index }} {{ data }}
+            <input type="checkbox" v-model="selektierteKategorien[index]">
+            {{ index }} ({{ data }})
           </label>
         </div>
       </div>
       {{ filterDauer.length }}<br>
+      {{angezeigteSpieleAnzahl}}
 
       <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center">
-        <Card :spiel="spiel" v-for="(spiel, index) in filterDauer" :key="spiel" :id="index" class="my-card"
+        <Card :spiel="spiel" v-for="(spiel, index) in angezeigteSpiele" :key="spiel" :id="index" class="my-card"
               @click="navigate(spiel)">
         </Card>
       </div>
@@ -62,7 +63,7 @@
 
 <script>
 import {routeNames} from '@/router'
-import {computed, reactive} from "@vue/reactivity";
+import {computed, reactive, ref} from "@vue/reactivity";
 import Card from "@/components/Card";
 import {onMounted, onUnmounted, watchEffect} from "@vue/runtime-core";
 import {dauer, filter, filteredGames, renderedGames} from './SpielFilter'
@@ -73,7 +74,13 @@ import {debounce} from "@/components/Util";
 
 export default {
   setup() {
+
+
     let store = useStore();
+
+    let zuBeginnAngezeigteSpiele = 12;
+    let angezeigteSpieleAnzahl = reactive({zahl: zuBeginnAngezeigteSpiele});
+    let resetAngezeigteSpiele = ()=> angezeigteSpieleAnzahl.zahl = zuBeginnAngezeigteSpiele
 
     let filterKategorien = computed(() => {
       if (store.state.spiele === null) {
@@ -81,7 +88,11 @@ export default {
       }
       let spiele = store.state.spiele;
       let keys = Object.keys(spiele);
-      return keys
+      let result = {}
+      for(let key in spiele){
+        result[key] = spiele[key].length
+      }
+      return result
     })
 
     let unoCount = arr => {
@@ -124,19 +135,19 @@ export default {
 
 
       result = filterNachName(spiele, filter.nameDebounced);
-      unoCount(result)
+      resetAngezeigteSpiele()
       return result
     })
 
     let filterSpieler = computed(() => {
       let result = filterNachSpieler(filterName.value, filter.spieler);
-      unoCount(result)
+      resetAngezeigteSpiele()
       return result;
     })
 
     let filterDauer = computed(() => {
       let result = filterNachDauer(filterSpieler.value, dauer);
-      unoCount(result)
+      resetAngezeigteSpiele()
       return result;
     })
 
@@ -145,13 +156,15 @@ export default {
       let condition = (window.innerHeight + window.scrollY + 50) >= document.body.offsetHeight;
       if (condition) {
         scrolled++
-        for (let i = 0; i < 3; i++) {
-          let filteredGame = filteredGames.value[renderedGames.length + i];
-          if (filteredGame !== undefined)
-            renderedGames.push(filteredGame)
-        }
+        angezeigteSpieleAnzahl.zahl = angezeigteSpieleAnzahl.zahl + 4
+        // for (let i = 0; i < 3; i++) {
+        //   let filteredGame = filteredGames.value[renderedGames.length + i];
+        //   if (filteredGame !== undefined)
+        //     renderedGames.push(filteredGame)
+        // }
       }
     }
+    let angezeigteSpiele = computed(() => filterDauer.value.slice(0, angezeigteSpieleAnzahl.zahl))
     onMounted(() => {
       window.addEventListener('scroll', handleScroll)
     })
@@ -163,7 +176,9 @@ export default {
       dauer,
       filterDauer,
       filterKategorien,
-      selektierteKategorien
+      selektierteKategorien,
+      angezeigteSpieleAnzahl,
+      angezeigteSpiele
     }
   },
   methods: {
@@ -178,7 +193,6 @@ export default {
   },
   data: () => {
     return {
-      angezeigteSpiele: [],
     }
   },
   components: {
