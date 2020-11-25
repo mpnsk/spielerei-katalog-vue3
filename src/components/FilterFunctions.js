@@ -3,11 +3,9 @@ import range from "@/functions/rangeUtil";
 let filterNachSpielerLastArgument = -1
 let filterNachSpielerLastResult = -1
 let filterNachSpieler = (spiele, n) => {
-    console.log("filterNachSpieler");
     // if (spiele.length===0) return []
     // if (n===filterNachSpielerLastArgument) return filterNachSpielerLastResult
     // filterNachSpielerLastArgument = n
-
     spiele = spiele.filter(({players}) => players == null || players.max >= n && players.min <= n)
 
     // filterNachSpielerLastResult = spiele
@@ -32,7 +30,6 @@ let filterNachDauer = (spiele, dauerArray) => {
     return result
 }
 let filterNachName = (spiele, input) => {
-    console.log("filterNachName")
     if (input === "") return spiele
     return spiele.filter(spiel => spiel.name.toLowerCase().includes(input.toLowerCase()))
 }

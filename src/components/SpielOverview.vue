@@ -36,16 +36,16 @@
         </div>
       </div>
       <div id="kategorie" class="space-x-1 space-y-1">
-        <div v-for="(data, index) in filter.kategorie" :key="index" class="inline-block">
+        <div v-for="(data, index) in filterKategorien" :key="index" class="inline-block">
           <label
               v-bind:class="{
                tagBase: true,
-               activeTag: data.active,
-               inactiveTag: !data.active,
+               activeTag: selektierteKategorien[data],
+               inactiveTag: !selektierteKategorien[data],
              }"
           >
-            <input type="checkbox" v-model="data.active">
-            {{ data.text }}
+            <input type="checkbox" v-model="selektierteKategorien[data]">
+            {{ index }} {{ data }}
           </label>
         </div>
       </div>
@@ -75,26 +75,55 @@ export default {
   setup() {
     let store = useStore();
 
+    let filterKategorien = computed(() => {
+      if (store.state.spiele === null) {
+        return {}
+      }
+      let spiele = store.state.spiele;
+      let keys = Object.keys(spiele);
+      return keys
+    })
 
     let unoCount = arr => {
-      let unos = arr.filter(({name}) => name.toLowerCase().includes("uno"));
-      let length = unos.length;
-      console.log("uno count " + length);
-      return length
+      // let unos = arr.filter(({name}) => name.toLowerCase().includes("uno"));
+      // let length = unos.length;
+      // console.log("uno count " + length);
+      // return length
+      return 1337
     }
 
     watchEffect(() => {
-      console.log("fitler.name " + filter.name);
-      console.log("filter.nameDebounced" + filter.nameDebounced);
       debounce(() => {
             filter.nameDebounced = filter.name
           }, 800
       )()
     });
 
+    let selektierteKategorien = reactive({});
     let filterName = computed(() => {
-      let spiele = store === undefined ? [] : store.state.spiele
-      let result = filterNachName(spiele, filter.nameDebounced);
+      // let spiele = store === undefined ? [] : store.state.spiele
+      if (store.state.spiele === null) {
+        return []
+      }
+      let result = []
+      let spiele = []
+      let spiele1 = store.state.spiele;
+      let kategorienToAdd = []
+      for (let k in selektierteKategorien) {
+        if (selektierteKategorien[k] === true) kategorienToAdd.push(k)
+      }
+      if (kategorienToAdd.length === 0) {
+        for (let k in spiele1){
+          spiele = spiele.concat(spiele1[k])
+        }
+      } else {
+        for (let activeKategorie of kategorienToAdd) {
+          spiele = spiele.concat(spiele1[activeKategorie])
+        }
+      }
+
+
+      result = filterNachName(spiele, filter.nameDebounced);
       unoCount(result)
       return result
     })
@@ -133,6 +162,8 @@ export default {
       filter,
       dauer,
       filterDauer,
+      filterKategorien,
+      selektierteKategorien
     }
   },
   methods: {
@@ -147,7 +178,7 @@ export default {
   },
   data: () => {
     return {
-      angezeigteSpiele: []
+      angezeigteSpiele: [],
     }
   },
   components: {

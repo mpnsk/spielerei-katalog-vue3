@@ -9,7 +9,7 @@ import tailwindutilities from 'tailwindcss/dist/utilities.css'
 import 'lazysizes'
 import 'lazysizes/plugins/unveilhooks/ls.unveilhooks.min';
 
-fetch(new Request('http://192.168.178.147:8090/games'))
+fetch(new Request('http://192.168.178.147:8090/list/games'))
     .then(response => response.json())
     .then(json => {
         store.commit('load', json)

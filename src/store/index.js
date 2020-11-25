@@ -3,11 +3,11 @@ import {createStore} from 'vuex'
 let store = createStore({
     state() {
         return {
-            spiele: []
+            spiele: null
         }
     },
     mutations: {
-        load: (state, neueSpiele) => state.spiele = state.spiele.concat(neueSpiele)
+        load: (state, neueSpiele) => state.spiele = neueSpiele
     },
     // getters: {
     //     spiele: (state) => state.spiele
