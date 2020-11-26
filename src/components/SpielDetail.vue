@@ -45,6 +45,7 @@ import {routeNames} from './../router'
 import {computed, ref} from "@vue/reactivity";
 // eslint-disable-next-line no-unused-vars
 import {watch} from "@vue/runtime-core";
+import {useStore} from "vuex";
 // import spiele from '../assets/spiele.json'
 
 export default {
@@ -52,11 +53,20 @@ export default {
     spielId: String,
   },
   setup(props) {
+
+    let store = useStore();
+
     let spiele = []
     console.log(props.spielId)
     let spiel = computed(() => {
-      let id = props.spielId;
-      return spiele.asMap.get(id)
+      let shortLink = props.spielId;
+
+      // debugger
+      if (store===undefined) return null
+      let spiel1 = store.getters.spiel(shortLink);
+      return spiel1
+
+      // return spiele.asMap.get(id)
 
     })
     return {spiel, routeNames}

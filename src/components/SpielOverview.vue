@@ -187,7 +187,7 @@ export default {
     navigate(spiel) {
       this.$router.push({
         name: routeNames.dialog,
-        params: {spielId: spiel.name}
+        params: {spielId: spiel.shortLink}
       })
     },
     neueDauer() {
