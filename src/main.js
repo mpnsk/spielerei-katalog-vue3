@@ -7,7 +7,7 @@ import tailwindcomponents from 'tailwindcss/dist/components.css'
 import tailwind from 'tailwindcss/dist/tailwind.css'
 import tailwindutilities from 'tailwindcss/dist/utilities.css'
 import 'lazysizes'
-import 'lazysizes/plugins/unveilhooks/ls.unveilhooks.min';
+// import 'lazysizes/plugins/unveilhooks/ls.unveilhooks.min';
 
 fetch(new Request('http://51.158.164.16:8090/list/games'))
     .then(response => response.json())
