@@ -69,7 +69,6 @@ import {onMounted, onUnmounted, watchEffect} from "@vue/runtime-core";
 import {dauer, filter, filteredGames, renderedGames} from './SpielFilter'
 import {useStore} from "vuex";
 import {filterNachDauer, filterNachName, filterNachSpieler} from "@/components/FilterFunctions";
-import useDebounce from "@/components/useDebounce";
 import {debounce} from "@/components/Util";
 
 export default {
