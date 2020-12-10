@@ -1,11 +1,4 @@
 <template>
-    <div id="nav">
-      <router-link :to="{name: routeNames.overview }">List</router-link>
-      |
-      <router-link :to="{name: routeNames.index }">Home</router-link>
-      |
-      <router-link :to="{name: routeNames.about }">About</router-link>
-    </div>
     <router-view/>
 </template>
 <script>
