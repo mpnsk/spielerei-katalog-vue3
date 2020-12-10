@@ -27,7 +27,7 @@
               v-bind:class="{
                tagBase: true,
                activeTag: data.active,
-               inactiveTag: !data.active,
+               inactiveTag: !data.active && !keineDauerGewaehlt,
              }"
           >
             <input type="checkbox" v-model="data.active">
@@ -41,7 +41,7 @@
               v-bind:class="{
                tagBase: true,
                activeTag: selektierteKategorien[index],
-               inactiveTag: !selektierteKategorien[index],
+               inactiveTag: !selektierteKategorien[index] && !keineKategorieGewaehlt,
              }"
           >
             <input type="checkbox" v-model="selektierteKategorien[index]">
@@ -49,8 +49,8 @@
           </label>
         </div>
       </div>
-      {{ filterDauer.length }}<br>
-<!--      {{angezeigteSpieleAnzahl}}-->
+      gefiltert auf {{ filterDauer.length }} Spiele<br>
+      <!--      {{angezeigteSpieleAnzahl}}-->
 
       <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center">
         <Card :spiel="spiel" v-for="(spiel, index) in angezeigteSpiele" :key="spiel" :id="index" class="my-card"
@@ -93,14 +93,6 @@ export default {
       }
       return result
     })
-
-    let unoCount = arr => {
-      // let unos = arr.filter(({name}) => name.toLowerCase().includes("uno"));
-      // let length = unos.length;
-      // console.log("uno count " + length);
-      // return length
-      return 1337
-    }
 
     watchEffect(() => {
       let importantTempVariablePromptingVueToActuallyDoAnything = filter.name;
@@ -172,6 +164,21 @@ export default {
     onUnmounted(() => {
       window.removeEventListener('scroll', handleScroll)
     })
+
+    let keineDauerGewaehlt = computed(() => {
+      for (let dauerElement of dauer) if (dauerElement.active) return false
+      return true
+    })
+    let keineKategorieGewaehlt = computed(() => {
+      for (let k in selektierteKategorien) {
+        console.log("selektierteKategorien");
+        let selektiert = selektierteKategorien[k];
+        console.log(selektiert)
+        if (selektiert) return false
+      }
+      return true
+    })
+
     return {
       filter,
       dauer,
@@ -179,7 +186,9 @@ export default {
       filterKategorien,
       selektierteKategorien,
       angezeigteSpieleAnzahl,
-      angezeigteSpiele
+      angezeigteSpiele,
+      keineDauerGewaehlt,
+      keineKategorieGewaehlt
     }
   },
   methods: {
@@ -217,6 +226,8 @@ export default {
   border: 1px solid;
   border-radius: 5px;
   padding: 3px;
+  border-color: lightgrey;
+  background-color: #defcd8;
 
   user-select: none;
   -khtml-user-select: none;
@@ -226,19 +237,11 @@ export default {
 
 .inactiveTag {
   border-color: lightgrey;
+  background-color: snow;
 }
 
 .activeTag {
-  background-color: #c4ffb8;
   border-color: green;
-}
-
-.selectChecked {
-  background-color: #c4ffb8;
-  border-color: green;
-}
-
-.selectUnchecked {
-  border-color: lightgrey;
+  background-color: #bffdb2;
 }
 </style>
