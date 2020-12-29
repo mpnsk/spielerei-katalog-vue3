@@ -19,7 +19,6 @@ let store = createStore({
                     }
                 }
             }
-            debugger
             return result
         }
     },
