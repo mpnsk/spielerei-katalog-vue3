@@ -16,8 +16,7 @@
     ">
         <div class="col-span-1 sm:row-start-1 sm:col-span-1">
           <img
-              data-sizes="auto"
-              v-bind:data-srcset="imgSrcSet"
+              v-bind:srcset="imgSrcSet"
               alt="Bild läd.."
               class="lazyload place-self-center object-center "
           />
@@ -44,9 +43,8 @@
 <script>
 import {routeNames} from './../router'
 // eslint-disable-next-line no-unused-vars
-import {computed, ref} from "@vue/reactivity";
+import {computed} from "@vue/reactivity";
 // eslint-disable-next-line no-unused-vars
-import {watch} from "@vue/runtime-core";
 import {useStore} from "vuex";
 // import spiele from '../assets/spiele.json'
 
@@ -97,14 +95,11 @@ export default {
       const firstAttachment = spiel.attachments[0]
       const id = firstAttachment.id
       const name = firstAttachment.name
-      console.log(firstAttachment)
       let srcs = []
       for (let p of firstAttachment.previews) {
-        srcs.push("http://409b50da-f0a5-40b4-9076-6f3b88346cf3.pub.instances.scw.cloud:8082/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w + "w")
+        srcs.push(process.env.VUE_APP_IMAGE_URL + "/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w + "w")
       }
-      const srcSet = srcs.join(',');
-      console.log(srcSet);
-      return srcSet
+      return srcs.join(',')
     }
   }
 }

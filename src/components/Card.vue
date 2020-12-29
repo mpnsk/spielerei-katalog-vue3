@@ -3,7 +3,6 @@
     <div class="container flex-1">
 
       <img
-          data-sizes="auto"
           v-bind:data-srcset="imgSrcSet"
           alt="Bild läd.."
           class="lazyload place-self-center object-center "
@@ -40,14 +39,11 @@ export default {
       }
       const id = firstAttachment.id
       const name = firstAttachment.name
-      console.log(firstAttachment)
       let srcs = []
       for (let p of firstAttachment.previews) {
         srcs.push(process.env.VUE_APP_IMAGE_URL + "/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w + "w")
       }
-      const srcSet = srcs.join(',');
-      console.log(srcSet);
-      return srcSet
+      return srcs.join(', ')
     }
   }
 }

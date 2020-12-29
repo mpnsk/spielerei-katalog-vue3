@@ -8,8 +8,7 @@ import tailwind from 'tailwindcss/dist/tailwind.css'
 import tailwindutilities from 'tailwindcss/dist/utilities.css'
 import 'lazysizes'
 // import 'lazysizes/plugins/unveilhooks/ls.unveilhooks.min';
-
-fetch(new Request('http://409b50da-f0a5-40b4-9076-6f3b88346cf3.pub.instances.scw.cloud:8080/list/games'))
+fetch(new Request(process.env.VUE_APP_GAME_URL + "/list/games"))
     .then(response => response.json())
     .then(json => {
         store.commit('load', json)
