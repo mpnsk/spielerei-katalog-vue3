@@ -38,7 +38,7 @@ export default {
       console.log(firstAttachment)
       let srcs = []
       for (let p of firstAttachment.previews) {
-        srcs.push("http://409b50da-f0a5-40b4-9076-6f3b88346cf3.pub.instances.scw.cloud/:8082/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w + "w")
+        srcs.push("http://409b50da-f0a5-40b4-9076-6f3b88346cf3.pub.instances.scw.cloud:8082/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w + "w")
       }
       const srcSet = srcs.join(',');
       console.log(srcSet);
