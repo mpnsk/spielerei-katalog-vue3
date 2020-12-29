@@ -77,7 +77,7 @@ export default {
 
     let store = useStore();
 
-    let zuBeginnAngezeigteSpiele = 12;
+    let zuBeginnAngezeigteSpiele = 24;
     let angezeigteSpieleAnzahl = reactive({zahl: zuBeginnAngezeigteSpiele});
     let resetAngezeigteSpiele = ()=> angezeigteSpieleAnzahl.zahl = zuBeginnAngezeigteSpiele
 
