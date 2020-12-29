@@ -33,6 +33,11 @@ export default {
     imgSrcSet() {
       const spiel = this.spiel
       const firstAttachment = spiel.attachments[0]
+      if (firstAttachment === undefined) {
+        console.log("no attachment:")
+        console.log(spiel)
+        return ""
+      }
       const id = firstAttachment.id
       const name = firstAttachment.name
       console.log(firstAttachment)
