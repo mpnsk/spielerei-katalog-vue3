@@ -16,8 +16,10 @@
     ">
         <div class="col-span-1 sm:row-start-1 sm:col-span-1">
           <img
-              :src="spiel.coverUrl"
-              alt="this is an image!"
+              data-sizes="auto"
+              v-bind:data-srcset="imgSrcSet"
+              alt="Bild läd.."
+              class="lazyload place-self-center object-center "
           />
         </div>
         <div class="col-span-1 sm:row-start-2 sm:col-span-1 place-self-center">
@@ -61,8 +63,7 @@ export default {
     let spiel = computed(() => {
       let shortLink = props.spielId;
 
-      // debugger
-      if (store===undefined) return null
+      if (store === undefined) return null
       let spiel1 = store.getters.spiel(shortLink);
       return spiel1
 
@@ -88,6 +89,22 @@ export default {
         return x.min + "+";
       else
         return x.min + " - " + x.max
+    }
+  },
+  computed: {
+    imgSrcSet() {
+      const spiel = this.spiel
+      const firstAttachment = spiel.attachments[0]
+      const id = firstAttachment.id
+      const name = firstAttachment.name
+      console.log(firstAttachment)
+      let srcs = []
+      for (let p of firstAttachment.previews) {
+        srcs.push("http://409b50da-f0a5-40b4-9076-6f3b88346cf3.pub.instances.scw.cloud/:8082/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w + "w")
+      }
+      const srcSet = srcs.join(',');
+      console.log(srcSet);
+      return srcSet
     }
   }
 }

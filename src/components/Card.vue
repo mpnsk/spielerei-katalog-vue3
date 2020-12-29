@@ -3,7 +3,8 @@
     <div class="container flex-1">
 
       <img
-          v-bind:data-src="spiel.coverUrl"
+          data-sizes="auto"
+          v-bind:data-srcset="imgSrcSet"
           alt="Bild läd.."
           class="lazyload place-self-center object-center "
       />
@@ -27,6 +28,22 @@ export default {
   props: ['spiel'],
   methods: {
     format: x => SpielFormat.display(x)
+  },
+  computed: {
+    imgSrcSet() {
+      const spiel = this.spiel
+      const firstAttachment = spiel.attachments[0]
+      const id = firstAttachment.id
+      const name = firstAttachment.name
+      console.log(firstAttachment)
+      let srcs = []
+      for (let p of firstAttachment.previews) {
+        srcs.push("http://409b50da-f0a5-40b4-9076-6f3b88346cf3.pub.instances.scw.cloud/:8082/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w + "w")
+      }
+      const srcSet = srcs.join(',');
+      console.log(srcSet);
+      return srcSet
+    }
   }
 }
 </script>
