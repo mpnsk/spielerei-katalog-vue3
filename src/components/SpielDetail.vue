@@ -14,11 +14,11 @@
           place-content-center
           m-5
     ">
-        <div class="col-span-1 sm:row-start-1 sm:col-span-1">
+        <div class="col-span-1 sm:row-start-1 sm:col-span-1 place-self-center p-5">
           <img
               v-bind:data-srcset="imgSrcSet"
               alt="Bild läd.."
-              class="lazyload place-self-center object-center "
+              class="lazyload"
           />
         </div>
         <div class="col-span-1 sm:row-start-2 sm:col-span-1 place-self-center">
