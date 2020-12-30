@@ -5,34 +5,38 @@
 
     <div v-if="spiel !== undefined">
 
-            <div>
-              <h1>{{ spiel.name }} {{ spiel.released ? '(' + spiel.released + ')' : '' }}</h1>
-            </div>
+      <div>
+        <h1>{{ spiel.name }} {{ spiel.released ? '(' + spiel.released + ')' : '' }}</h1>
+      </div>
       <div
-          class="
-          grid
-          place-content-center
-          m-5
-    ">
-        <div class="col-span-1 sm:row-start-1 sm:col-span-1 place-self-center p-5">
+          class="grid place-content-center">
+        <div class="
+        col-span-1 col-start-1 row-start-1
+        md:row-span-2
+        place-self-center">
           <img
-              v-bind:data-srcset="imgSrcSet"
               alt="Bild läd.."
               class="lazyload"
+              v-bind:data-srcset="imgSrcSet"
           />
         </div>
-        <div class="col-span-1 sm:row-start-2 sm:col-span-1 place-self-center">
+        <div class="
+        p-10
+        col-start-1 row-start-2
+        md:col-start-2 md:row-start-1 md:self-center
+        ">
           <ul>
             <li>{{ display(spiel.duration) }} Min</li>
             <li>{{ display(spiel.age) }}</li>
             <li>{{ display(spiel.players) }}</li>
           </ul>
-        </div>
-        <div class="col-span-2 sm:col-start-3 sm:row-start-1 sm:row-span-2" v-if="spiel.description !== undefined">
+        <div v-if="spiel.description !== undefined"
+             class="">
           <div class="sm:max-w-3xl">
 
             {{ spiel.description }}
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -97,7 +101,7 @@ export default {
       const name = firstAttachment.name
       let srcs = []
       for (let p of firstAttachment.previews) {
-        srcs.push(process.env.VUE_APP_IMAGE_URL + "/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w  + "w")
+        srcs.push(process.env.VUE_APP_IMAGE_URL + "/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w + "w")
       }
       return srcs.join(',')
     }
