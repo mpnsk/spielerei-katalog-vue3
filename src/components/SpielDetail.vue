@@ -16,7 +16,7 @@
     ">
         <div class="col-span-1 sm:row-start-1 sm:col-span-1">
           <img
-              v-bind:srcset="imgSrcSet"
+              v-bind:data-srcset="imgSrcSet"
               alt="Bild läd.."
               class="lazyload place-self-center object-center "
           />
