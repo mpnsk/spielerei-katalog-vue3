@@ -97,7 +97,7 @@ export default {
       const name = firstAttachment.name
       let srcs = []
       for (let p of firstAttachment.previews) {
-        srcs.push(process.env.VUE_APP_IMAGE_URL + "/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w * 4 + "w")
+        srcs.push(process.env.VUE_APP_IMAGE_URL + "/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w  + "w")
       }
       return srcs.join(',')
     }
