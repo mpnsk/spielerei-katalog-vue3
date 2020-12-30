@@ -12,8 +12,9 @@
           class="grid place-content-center">
         <div class="
         col-span-1 col-start-1 row-start-1
-        md:row-span-2
-        place-self-center">
+        place-self-center"
+             :class="{mdRowSpan2: spiel.description !== ''}"
+        >
           <img
               alt="Bild läd.."
               class="lazyload"
@@ -23,20 +24,19 @@
         <div class="
         p-10
         col-start-1 row-start-2
-        md:col-start-2 md:row-start-1 md:self-center
-        ">
+        "
+             :class="{secondColumnLayout: spiel.description !== ''}"
+        >
           <ul>
             <li>{{ display(spiel.duration) }} Min</li>
             <li>{{ display(spiel.age) }}</li>
             <li>{{ display(spiel.players) }}</li>
           </ul>
-        <div v-if="spiel.description !== undefined"
-             class="">
-          <div class="sm:max-w-3xl">
-
+          <div v-if="spiel.description !== ''"
+               class="sm:max-w-3xl">
+            Description
             {{ spiel.description }}
           </div>
-        </div>
         </div>
       </div>
     </div>
@@ -108,3 +108,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+.secondColumnLayout {
+  @apply md:col-start-2 md:row-start-1 md:self-center
+}
+
+.mdRowSpan2 {
+  @apply md:row-span-2
+}
+</style>
