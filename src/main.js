@@ -8,11 +8,6 @@ import tailwind from 'tailwindcss/dist/tailwind.css'
 import tailwindutilities from 'tailwindcss/dist/utilities.css'
 import 'lazysizes'
 // import 'lazysizes/plugins/unveilhooks/ls.unveilhooks.min';
-fetch(new Request(process.env.VUE_APP_GAME_URL + "/list/games"))
-    .then(response => response.json())
-    .then(json => {
-        store.commit('load', json)
-    })
 
 createApp(App)
     .use(router)

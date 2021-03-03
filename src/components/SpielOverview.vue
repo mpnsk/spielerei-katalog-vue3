@@ -1,5 +1,8 @@
 <template>
   <div style="padding: 15px">
+    <div v-if="games.length !== 0">
+      <div v-for="(data,index) in games" :key="index">#{{ index }}: {{ data.title }}</div>
+    </div>
     <div id="filter" class="space-y-1">
       <div id="spielname" class="">
         <label>Titel
@@ -36,7 +39,7 @@
         </div>
       </div>
       <div id="kategorie" class="space-x-1 space-y-1">
-        <div v-for="(data, index) in filterKategorien" :key="index" class="inline-block">
+        <div v-for="(data, index) in categories" :key="index" class="inline-block">
           <label
               v-bind:class="{
                tagBase: true,
@@ -52,10 +55,58 @@
       gefiltert auf {{ filterDauer.length }} Spiele<br>
       <!--      {{angezeigteSpieleAnzahl}}-->
 
-      <div id="spiele" class="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 place-items-center">
-        <Card :spiel="spiel" v-for="(spiel, index) in angezeigteSpiele" :key="spiel" :id="index" class="my-card"
-              @click="navigate(spiel)">
-        </Card>
+      <div id="spiele"
+           v-if="games.length !== 0"
+      >
+        <!--        <TableRow :spiel="spiel" v-for="(spiel, index) in theData._embedded.games" :key="spiel" :id="index" class="my-card"-->
+        <!--              @click="navigate(index)">-->
+        <!--        </TableRow>-->
+        <table class="border-collapse w-full">
+          <thead>
+          <tr>
+            <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Company name
+            </th>
+            <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Country
+            </th>
+            <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Status
+            </th>
+            <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"
+                v-if="team">Actions
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr
+              :spiel="spiel" v-for="(spiel, index) in games" :key="spiel" :id="index"
+
+              class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
+            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+              <span
+                  class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Titel</span>
+              {{ spiel.title }}
+            </td>
+            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+              <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Beschreibung</span>
+              {{ spiel.description }}
+            </td>
+            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+              <span
+                  class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Status</span>
+              <span class="rounded bg-yellow-400 py-1 px-3 text-xs font-bold">inactive</span>
+            </td>
+            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static"
+                v-if="team">
+              <span
+                  class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Actions</span>
+              <a href="#" class="text-blue-400 hover:text-blue-600 underline">Edit</a>
+              <a href="#" class="text-blue-400 hover:text-blue-600 underline pl-6">Remove</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -70,6 +121,8 @@ import {dauer, filter, filteredGames, renderedGames} from './SpielFilter'
 import {useStore} from "vuex";
 import {filterNachDauer, filterNachName, filterNachSpieler} from "@/components/FilterFunctions";
 import {debounce} from "@/components/Util";
+import store from "@/store";
+import TableRow from "@/components/TableRow";
 
 export default {
   setup() {
@@ -79,7 +132,7 @@ export default {
 
     let zuBeginnAngezeigteSpiele = 24;
     let angezeigteSpieleAnzahl = reactive({zahl: zuBeginnAngezeigteSpiele});
-    let resetAngezeigteSpiele = ()=> angezeigteSpieleAnzahl.zahl = zuBeginnAngezeigteSpiele
+    let resetAngezeigteSpiele = () => angezeigteSpieleAnzahl.zahl = zuBeginnAngezeigteSpiele
 
     let filterKategorien = computed(() => {
       if (store.state.spiele === null) {
@@ -88,7 +141,7 @@ export default {
       let spiele = store.state.spiele;
       let keys = Object.keys(spiele);
       let result = {}
-      for(let key in spiele){
+      for (let key in spiele) {
         result[key] = spiele[key].length
       }
       return result
@@ -117,7 +170,7 @@ export default {
         if (selektierteKategorien[k] === true) kategorienToAdd.push(k)
       }
       if (kategorienToAdd.length === 0) {
-        for (let k in spiele1){
+        for (let k in spiele1) {
           spiele = spiele.concat(spiele1[k])
         }
       } else {
@@ -195,7 +248,7 @@ export default {
     navigate(spiel) {
       this.$router.push({
         name: routeNames.dialog,
-        params: {spielId: spiel.shortLink}
+        params: {spielId: spiel + 1}
       })
     },
     neueDauer() {
@@ -203,10 +256,22 @@ export default {
   },
   data: () => {
     return {
+      games: [],
+      categories: {"abc": 1, "def":2},
+      team: false,
     }
   },
   components: {
+    TableRow,
     Card
+  },
+  created() {
+    fetch(new Request(process.env.VUE_APP_GAME_URL + "/games"))
+        .then(response => response.json())
+        .then(json => {
+          this.games = json._embedded.games
+        })
+    // this.categories.push("abc", "def", "ghi")
   }
 }
 </script>

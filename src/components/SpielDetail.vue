@@ -1,47 +1,47 @@
 <template>
-  <div>
-    <router-link :to="{name: routeNames.dialog, params: { spielId: spielId - 1 }  }">←</router-link>
-    <router-link :to="{name: routeNames.dialog, params: { spielId: Number(spielId) + 1 }  }">→</router-link>
+    <!--    <router-link :to="{name: routeNames.dialog, params: { spielId: spielId - 1 }  }">←</router-link>-->
+    <!--    <router-link :to="{name: routeNames.dialog, params: { spielId: Number(spielId) + 1 }  }">→</router-link>-->
 
-    <div v-if="spiel !== undefined">
-
+    <div v-if="game !== undefined">
       <div>
-        <h1>{{ spiel.name }} {{ spiel.released ? '(' + spiel.released + ')' : '' }}</h1>
+        <h1>{{ game.title }} {{ game.releaseYear ? '(' + game.releaseYear + ')' : '' }}</h1>
       </div>
       <div
           class="grid place-content-center">
         <div class="
         col-span-1 col-start-1 row-start-1
+        bg-red-500
         place-self-center"
-             :class="{mdRowSpan2: spiel.description !== ''}"
+             :class="{mdRowSpan2: game.description !== ''}"
         >
-          <img
-              alt="Bild läd.."
-              class="lazyload"
-              v-bind:data-srcset="imgSrcSet"
-          />
+          img
+          <!--          <img-->
+          <!--              alt="Bild läd.."-->
+          <!--              class="lazyload"-->
+          <!--              v-bind:data-srcset="imgSrcSet"-->
+          <!--          />-->
+
         </div>
         <div class="
         p-10
         col-start-1 row-start-2
         "
-             :class="{secondColumnLayout: spiel.description !== ''}"
+             :class="{secondColumnLayout: game.description !== ''}"
         >
           <ul>
-            <li>{{ display(spiel.duration) }} Min</li>
-            <li>{{ display(spiel.age) }}</li>
-            <li>{{ display(spiel.players) }}</li>
+            <li>{{ display({min: game.minutes, max: 90}) }} Min</li>
+            <li>{{ display(game.age) }}</li>
+<!--            <li>{{ display(game.players) }}</li>-->
+            <li>{{display({min: game.playerMinimum, max: game.playerMaximum})}}</li>
           </ul>
-          <div v-if="spiel.description !== ''"
+          <div v-if="game.description !== ''"
                class="sm:max-w-3xl">
             Description
-            {{ spiel.description }}
+            {{ game.description }}
           </div>
         </div>
       </div>
     </div>
-
-  </div>
 </template>
 
 <script>
@@ -50,7 +50,6 @@ import {routeNames} from './../router'
 import {computed} from "@vue/reactivity";
 // eslint-disable-next-line no-unused-vars
 import {useStore} from "vuex";
-// import spiele from '../assets/spiele.json'
 
 export default {
   props: {
@@ -62,29 +61,20 @@ export default {
 
     let spiele = []
     console.log(props.spielId)
-    let spiel = computed(() => {
-      let shortLink = props.spielId;
-
-      if (store === undefined) return null
-      let spiel1 = store.getters.spiel(shortLink);
-      return spiel1
-
-      // return spiele.asMap.get(id)
-
-    })
-    return {spiel, routeNames}
+    return {routeNames}
   },
   data() {
     return {
       fullWidth: true,
       fullHeight: false,
       full: false,
+      game: undefined
     }
   },
   methods: {
     display(x) {
       if (x == undefined || x.min < 0 || x.max < 0)
-        return '?'
+        return ''
       if (x.min === x.max)
         return x.min
       if (x.max === 99 | x.max === 999)
@@ -94,17 +84,26 @@ export default {
     }
   },
   computed: {
-    imgSrcSet() {
-      const spiel = this.spiel
-      const firstAttachment = spiel.attachments[0]
-      const id = firstAttachment.id
-      const name = firstAttachment.name
-      let srcs = []
-      for (let p of firstAttachment.previews) {
-        srcs.push(process.env.VUE_APP_IMAGE_URL + "/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w + "w")
-      }
-      return srcs.join(',')
-    }
+    // imgSrcSet() {
+    //   const spiel = this.spiel
+    //   const firstAttachment = spiel.attachments[0]
+    //   const id = firstAttachment.id
+    //   const name = firstAttachment.name
+    //   let srcs = []
+    //   for (let p of firstAttachment.previews) {
+    //     srcs.push(process.env.VUE_APP_IMAGE_URL + "/" + id + "/" + p.w + "x" + p.h + "/" + p.id + "/" + name + " " + p.w + "w")
+    //   }
+    //   return srcs.join(',')
+    // }
+  },
+  beforeMount() {
+    console.log("onmounted")
+    fetch(new Request(process.env.VUE_APP_GAME_URL + "/games/" + this.spielId))
+        .then(response => response.json())
+        .then(json => {
+          console.log("json", json)
+          this.game = json
+        })
   }
 }
 </script>
