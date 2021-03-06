@@ -1,63 +1,77 @@
 <template>
   <div style="padding: 15px">
-    <div v-if="games.length !== 0">
-      <div v-for="(data,index) in games" :key="index">#{{ index }}: {{ data.title }}</div>
-    </div>
-    <div id="filter" class="space-y-1">
-      <div id="spielname" class="">
-        <label>Titel
-          <input type="text"
-                 v-model="filter.name"/>
-        </label>
-      </div>
-      <div id="spielerzahl">
-        <label> Spielerzahl: {{ filter.spieler }}
-          <button class="p-1 bg-gray-200" @click="filter.spieler--">-</button>
+
+    <form class="form-example">
+      <div class="form-example">
+        <label for="spielerzahl"> Spielerzahl:</label>
+<!--        <div id="spielerzahl">-->
+
+<!--          <button class="p-1 " @click="filter.spieler&#45;&#45;">-</button>-->
           <input
-              type="range"
+              id="spielerzahl"
+              type="number"
               :min="1"
               :max="12"
               v-model="filter.spieler"
           />
-          <button class="p-1 bg-gray-200" @click="filter.spieler++">+</button>
-        </label></div>
-      <div id="spieldauer" class="space-x-1 space-y-1">
-        <label>
-          Spieldauer 🕘
-        </label>
-        <div v-for="(data, index) in dauer" :key="index" class="inline-block">
-          <label
-              v-bind:class="{
+<!--          <button class="" @click="filter.spieler++">+</button>-->
+<!--        </div>-->
+      </div>
+      <div class="form-example">
+        <label for="spieldauer">Spieldauer 🕘</label>
+<!--        <label for="email">Enter your emaill:</label>-->
+<!--        <input type="email" name="email" id="email">-->
+        <select name="spieldauer" id="spieldauer" multiple class="md:hidden" v-model="spieldauerselect">
+          <option v-for="(data, index) in dauer" :key="index" :value="index">{{data.text}}</option>
+        </select>
+        <div class="space-x-1 space-y-1 md:visible invisible">
+          <div v-for="(data, index) in dauer" :key="index" class="inline-block">
+            <label
+                v-bind:class="{
                tagBase: true,
-               activeTag: data.active,
-               inactiveTag: !data.active && !keineDauerGewaehlt,
+               activeTag: spieldauerselect.includes(index),
+               inactiveTag: !spieldauerselect.includes(index) && spieldauerselect.length > 0,
              }"
-          >
-            <input type="checkbox" v-model="data.active">
-            {{ data.text }}
-          </label>
+            >
+              <input type="checkbox" :id="index + data.text" :value="index" v-model="spieldauerselect">
+              {{ data.text }}
+            </label>
+          </div>
         </div>
       </div>
-      <div id="kategorie" class="space-x-1 space-y-1">
-        <div v-for="(data, index) in categories" :key="index" class="inline-block">
-          <label
-              v-bind:class="{
+      <div class="form-example">
+        <label for="spiel-kategorie">Spielkategorie</label>
+        <div id="spiel-kategorie" class="space-x-1 space-y-1">
+          <div v-for="(data, index) in categories" :key="index" class="inline-block">
+            <label
+                v-bind:class="{
                tagBase: true,
-               activeTag: selektierteKategorien[index],
-               inactiveTag: !selektierteKategorien[index] && !keineKategorieGewaehlt,
+               activeTag: spieldauerselect.includes(index),
+               inactiveTag: !spieldauerselect.includes(index) && !keineKategorieGewaehlt,
              }"
-          >
-            <input type="checkbox" v-model="selektierteKategorien[index]">
-            {{ index }} ({{ data }})
-          </label>
+            >
+              <input type="checkbox" v-model="selektierteKategorien[index]">
+              {{ index }} ({{ data }})
+            </label>
+          </div>
         </div>
       </div>
-      gefiltert auf {{ filterDauer.length }} Spiele<br>
+    </form>
+
+
+    <div v-if="games.length !== 0">
+<!--      <div v-for="(data,index) in games" :key="index">#{{ index }}: {{ data }}</div>-->
+    </div>
+    <div id="filter" class="space-y-1">
+<!--      <div id="spielname" class="">-->
+<!--        <label>Titel-->
+<!--          <input type="text"-->
+<!--                 v-model="filter.name"/>-->
+<!--        </label>-->
+<!--      </div>-->
       <!--      {{angezeigteSpieleAnzahl}}-->
 
-      <div id="spiele"
-           v-if="games.length !== 0"
-      >
+      <div id="spiele" v-if="games.length !== 0">
         <!--        <TableRow :spiel="spiel" v-for="(spiel, index) in theData._embedded.games" :key="spiel" :id="index" class="my-card"-->
         <!--              @click="navigate(index)">-->
         <!--        </TableRow>-->
@@ -65,13 +79,13 @@
           <thead>
           <tr>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-              Company name
+              Titel
             </th>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-              Country
+              Spieleranzahl
             </th>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-              Status
+              Spieldauer
             </th>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"
                 v-if="team">Actions
@@ -259,6 +273,7 @@ export default {
       games: [],
       categories: {"abc": 1, "def":2},
       team: false,
+      spieldauerselect: []
     }
   },
   components: {
@@ -309,4 +324,20 @@ export default {
   border-color: green;
   background-color: #bffdb2;
 }
+
+
+form.form-example {
+  display: table;
+}
+div.form-example {
+  display: table-row;
+}
+label, input {
+  display: table-cell;
+  margin-bottom: 10px;
+}
+label {
+  padding-right: 10px;
+}
+
 </style>
