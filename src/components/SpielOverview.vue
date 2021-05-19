@@ -4,25 +4,33 @@
     <form class="form-example">
       <div class="form-example">
         <label for="spielerzahl"> Spielerzahl:</label>
-<!--        <div id="spielerzahl">-->
+        <!--        <div id="spielerzahl">-->
 
-<!--          <button class="p-1 " @click="filter.spieler&#45;&#45;">-</button>-->
-          <input
-              id="spielerzahl"
-              type="number"
-              :min="1"
-              :max="12"
-              v-model="filter.spieler"
-          />
-<!--          <button class="" @click="filter.spieler++">+</button>-->
-<!--        </div>-->
+        <!--          <button class="p-1 " @click="filter.spieler&#45;&#45;">-</button>-->
+        <input
+            id="spielerzahl"
+            type="number"
+            :min="1"
+            :max="12"
+            v-model="filter.spieler"
+        />
+        <!--          <button class="" @click="filter.spieler++">+</button>-->
+        <!--        </div>-->
       </div>
       <div class="form-example">
         <label for="spieldauer">Spieldauer 🕘</label>
-<!--        <label for="email">Enter your emaill:</label>-->
-<!--        <input type="email" name="email" id="email">-->
+        <!--        <label for="email">Enter your emaill:</label>-->
+        <!--        <input type="email" name="email" id="email">-->
         <select name="spieldauer" id="spieldauer" multiple class="md:hidden" v-model="spieldauerselect">
-          <option v-for="(data, index) in dauer" :key="index" :value="index">{{data.text}}</option>
+          <option v-for="(data, index) in dauer" :key="index" :value="index"
+                  v-bind:class="{
+               // tagBase: true,
+               backgroundColorDEFCD8: spieldauerselect.length === 0,
+               activeTag: spieldauerselect.includes(index),
+               inactiveTag: !spieldauerselect.includes(index) && spieldauerselect.length > 0,
+          }">
+            {{ data.text }}
+          </option>
         </select>
         <div class="space-x-1 space-y-1 md:visible invisible">
           <div v-for="(data, index) in dauer" :key="index" class="inline-block">
@@ -60,21 +68,18 @@
 
 
     <div v-if="games.length !== 0">
-<!--      <div v-for="(data,index) in games" :key="index">#{{ index }}: {{ data }}</div>-->
+      <!--      <div v-for="(data,index) in games" :key="index">#{{ index }}: {{ data }}</div>-->
     </div>
     <div id="filter" class="space-y-1">
-<!--      <div id="spielname" class="">-->
-<!--        <label>Titel-->
-<!--          <input type="text"-->
-<!--                 v-model="filter.name"/>-->
-<!--        </label>-->
-<!--      </div>-->
+      <!--      <div id="spielname" class="">-->
+      <!--        <label>Titel-->
+      <!--          <input type="text"-->
+      <!--                 v-model="filter.name"/>-->
+      <!--        </label>-->
+      <!--      </div>-->
       <!--      {{angezeigteSpieleAnzahl}}-->
 
       <div id="spiele" v-if="games.length !== 0">
-        <!--        <TableRow :spiel="spiel" v-for="(spiel, index) in theData._embedded.games" :key="spiel" :id="index" class="my-card"-->
-        <!--              @click="navigate(index)">-->
-        <!--        </TableRow>-->
         <table class="border-collapse w-full">
           <thead>
           <tr>
@@ -85,7 +90,13 @@
               Spieleranzahl
             </th>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-              Spieldauer
+              Spieldauer in Minuten
+            </th>
+            <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Altersempgehlung
+            </th>
+            <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Leihpreis
             </th>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"
                 v-if="team">Actions
@@ -93,32 +104,51 @@
           </tr>
           </thead>
           <tbody>
-          <tr
+          <template
               :spiel="spiel" v-for="(spiel, index) in games" :key="spiel" :id="index"
-
-              class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+          >
+            <tr
+                class="bg-white hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0
+    even-blue
+">
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
               <span
                   class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Titel</span>
-              {{ spiel.title }}
-            </td>
-            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-              <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Beschreibung</span>
-              {{ spiel.description }}
-            </td>
-            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-              <span
-                  class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Status</span>
-              <span class="rounded bg-yellow-400 py-1 px-3 text-xs font-bold">inactive</span>
-            </td>
-            <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static"
-                v-if="team">
+                {{ spiel.name }}
+              </td>
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Spieleranzahl</span>
+                {{ formatSpieleranzahl(spiel) }}
+              </td>
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Spieldauer in Minuten</span>
+                {{ formatSpieldauer(spiel) }}
+              </td>
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Altersempfehlung</span>
+                {{ formatAltersempfehlung(spiel) }}
+              </td>
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Leihpreis</span>
+                {{ formatLeihpreis(spiel) }}
+              </td>
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static"
+                  v-if="team">
               <span
                   class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Actions</span>
-              <a href="#" class="text-blue-400 hover:text-blue-600 underline">Edit</a>
-              <a href="#" class="text-blue-400 hover:text-blue-600 underline pl-6">Remove</a>
-            </td>
-          </tr>
+                <a href="#" class="text-blue-400 hover:text-blue-600 underline">Edit</a>
+                <a href="#" class="text-blue-400 hover:text-blue-600 underline pl-6">Remove</a>
+              </td>
+            </tr>
+            <!--            <tr-->
+            <!--                class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">-->
+            <!--              <td colspan="5"-->
+            <!---->
+            <!--                  class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">-->
+            <!--                {{ spiel.description }}-->
+            <!--              </td>-->
+            <!--            </tr>-->
+          </template>
           </tbody>
         </table>
       </div>
@@ -135,8 +165,6 @@ import {dauer, filter, filteredGames, renderedGames} from './SpielFilter'
 import {useStore} from "vuex";
 import {filterNachDauer, filterNachName, filterNachSpieler} from "@/components/FilterFunctions";
 import {debounce} from "@/components/Util";
-import store from "@/store";
-import TableRow from "@/components/TableRow";
 
 export default {
   setup() {
@@ -265,26 +293,62 @@ export default {
         params: {spielId: spiel + 1}
       })
     },
-    neueDauer() {
+    formatSpieldauer(spiel) {
+      if (spiel.spieldauerTyp === null)
+        return ''
+      if (spiel.spieldauerTyp === 'Einwert') {
+        if (spiel.spieldauerMinutenMin === 0 && spiel.spieldauerMinutenMax === 0)
+          {
+            const thinkingEmoji = '🤔';
+            return thinkingEmoji
+          }
+        return spiel.spieldauerMinutenMin
+      }
+      if (spiel.spieldauerTyp === 'MinMax')
+        return spiel.spieldauerMinutenMin + ' bis ' + spiel.spieldauerMinutenMax
+      if (spiel.spieldauerTyp === 'ProSpieler')
+        if (spiel.spieldauerMinutenMax === 0)
+          return spiel.spieldauerMinutenMin + ' pro Spieler'
+        else
+          return spiel.spieldauerMinutenMin + ' bis ' + spiel.spieldauerMinutenMax + ' pro Spiele'
     },
+    formatAltersempfehlung(spiel) {
+      if (spiel.altersempfehlung !== 0) return spiel.altersempfehlung
+      if (spiel.altersempfehlungMax !== 0) return spiel.altersempfehlung - spiel.altersempfehlungMax
+      return ''
+    },
+    formatSpieleranzahl(spiel) {
+      if (spiel.spieleranzahlMin === 0 || spiel.spieleranzahlMax === 0)
+        return ''
+      if (spiel.spieleranzahlMax === 99)
+        return spiel.spieleranzahlMin + '+'
+      return spiel.spieleranzahlMin + ' - ' + spiel.spieleranzahlMax
+
+    },
+    formatLeihpreis(spiel) {
+      if (spiel.leihpreis !== 0)
+        return spiel.leihpreis + '€'
+      return ''
+    }
+
   },
   data: () => {
     return {
       games: [],
-      categories: {"abc": 1, "def":2},
+      categories: {"abc": 1, "def": 2},
       team: false,
       spieldauerselect: []
     }
   },
   components: {
-    TableRow,
     Card
   },
   created() {
-    fetch(new Request(process.env.VUE_APP_GAME_URL + "/games"))
+    fetch(new Request('http://localhost:8080' + "/spiele/"))
         .then(response => response.json())
         .then(json => {
-          this.games = json._embedded.games
+          console.log("json", json);
+          this.games = json._embedded.spiele
         })
     // this.categories.push("abc", "def", "ghi")
   }
@@ -329,15 +393,25 @@ export default {
 form.form-example {
   display: table;
 }
+
 div.form-example {
   display: table-row;
 }
+
 label, input {
   display: table-cell;
   margin-bottom: 10px;
 }
+
 label {
   padding-right: 10px;
 }
 
+.backgroundColorDEFCD8 {
+  background-color: #defcd8;
+}
+
+.even-blue:nth-child(even) {
+  /*background-color: blue;*/
+}
 </style>
