@@ -10,6 +10,7 @@ const names = {
     index: 'index',
     users: 'users',
     dialog: 'dialog',
+    spiel: 'spiel',
     overview: 'overview',
     about: 'about'
 }
@@ -32,6 +33,12 @@ const routes = [
     {
         name: names.dialog,
         path: '/dialog/:spielId',
+        component: SpielDetail,
+        props: true
+    },
+    {
+        name: names.spiel,
+        path: '/spiel/:kategorie/:spielId',
         component: SpielDetail,
         props: true
     }

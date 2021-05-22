@@ -1,47 +1,52 @@
 <template>
-    <!--    <router-link :to="{name: routeNames.dialog, params: { spielId: spielId - 1 }  }">←</router-link>-->
-    <!--    <router-link :to="{name: routeNames.dialog, params: { spielId: Number(spielId) + 1 }  }">→</router-link>-->
+  <!--    <router-link :to="{name: routeNames.dialog, params: { spielId: spielId - 1 }  }">←</router-link>-->
+  <!--    <router-link :to="{name: routeNames.dialog, params: { spielId: Number(spielId) + 1 }  }">→</router-link>-->
 
-    <div v-if="game !== undefined">
-      <div>
-        <h1>{{ game.title }} {{ game.releaseYear ? '(' + game.releaseYear + ')' : '' }}</h1>
-      </div>
-      <div
-          class="grid place-content-center">
-        <div class="
+  <!--  spielId:{{spielId}} <br>-->
+  <!--  kategorie {{kategorie}}-->
+  <!--  byKategorie: {{byKategorie[kategorie][spielId]}}-->
+  spiel: {{ spiel }}
+
+  <div v-if="game !== undefined">
+    <div>
+      <h1>{{ game.title }} {{ game.releaseYear ? '(' + game.releaseYear + ')' : '' }}</h1>
+    </div>
+    <div
+        class="grid place-content-center">
+      <div class="
         col-span-1 col-start-1 row-start-1
         bg-red-500
         place-self-center"
-             :class="{mdRowSpan2: game.description !== ''}"
-        >
-          img
-          <!--          <img-->
-          <!--              alt="Bild läd.."-->
-          <!--              class="lazyload"-->
-          <!--              v-bind:data-srcset="imgSrcSet"-->
-          <!--          />-->
+           :class="{mdRowSpan2: game.description !== ''}"
+      >
+        img
+        <!--          <img-->
+        <!--              alt="Bild läd.."-->
+        <!--              class="lazyload"-->
+        <!--              v-bind:data-srcset="imgSrcSet"-->
+        <!--          />-->
 
-        </div>
-        <div class="
+      </div>
+      <div class="
         p-10
         col-start-1 row-start-2
         "
-             :class="{secondColumnLayout: game.description !== ''}"
-        >
-          <ul>
-            <li>{{ display({min: game.minutes, max: 90}) }} Min</li>
-            <li>{{ display(game.age) }}</li>
-<!--            <li>{{ display(game.players) }}</li>-->
-            <li>{{display({min: game.playerMinimum, max: game.playerMaximum})}}</li>
-          </ul>
-          <div v-if="game.description !== ''"
-               class="sm:max-w-3xl">
-            Description
-            {{ game.description }}
-          </div>
+           :class="{secondColumnLayout: game.description !== ''}"
+      >
+        <ul>
+          <li>{{ display({min: game.minutes, max: 90}) }} Min</li>
+          <li>{{ display(game.age) }}</li>
+          <!--            <li>{{ display(game.players) }}</li>-->
+          <li>{{ display({min: game.playerMinimum, max: game.playerMaximum}) }}</li>
+        </ul>
+        <div v-if="game.description !== ''"
+             class="sm:max-w-3xl">
+          Description
+          {{ game.description }}
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -53,7 +58,9 @@ import {useStore} from "vuex";
 
 export default {
   props: {
-    spielId: String,
+    spielId: Number,
+    byKategorie: Object,
+    kategorie: String
   },
   setup(props) {
 
@@ -84,6 +91,10 @@ export default {
     }
   },
   computed: {
+    spiel() {
+      if (this.byKategorie === null) return {}
+      return this.byKategorie[this.kategorie][this.spielId];
+    }
     // imgSrcSet() {
     //   const spiel = this.spiel
     //   const firstAttachment = spiel.attachments[0]
