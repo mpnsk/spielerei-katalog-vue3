@@ -169,7 +169,7 @@ import {filterNachDauer, filterNachName, filterNachSpieler} from "@/components/F
 import {debounce} from "@/components/Util";
 
 export default {
-  props: ['spiele', 'kategorie'],
+  props: ['spiele', 'byKategorie'],
   setup() {
 
 
@@ -347,17 +347,17 @@ export default {
   },
   computed: {
     bezifferteKategorien() {
-      return this.kategorien
+      return this.byKategorien
     },
     spieleFlat(){
       let spiele = []
-      if (this.kategorie == null) return []
-      // for(const [key,value]  in this.kategorien){
+      if (this.byKategorie == null) return []
+      // for(const [key,value]  in this.byKategorien){
       //  console.log(key)
       //   console.log(value)
       // }
 
-      const values = Object.values(this.kategorie);
+      const values = Object.values(this.byKategorie);
       values.forEach(v => {
         v.forEach(s=>{
           spiele.push(s)

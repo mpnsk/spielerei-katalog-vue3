@@ -1,5 +1,5 @@
 <template>
-  <router-view :spiele="spiele" :kategorie="kategorie"/>
+  <router-view :spiele="spiele" :byKategorie="byKategorie"/>
 </template>
 <script>
 import {routeNames} from './router'
@@ -9,7 +9,7 @@ export default {
     return {
       routeNames,
       spiele: null,
-      kategorie: null
+      byKategorie: null
     }
   },
   mounted() {
@@ -28,7 +28,7 @@ export default {
     // /*
     fetch(new Request(process.env.VUE_APP_GAME_URL + "/kategorie"))
         .then(response => response.json())
-        .then(kategorie => this.kategorie = kategorie)
+        .then(byKategorie => this.byKategorie = byKategorie)
     // */
   }
 }
