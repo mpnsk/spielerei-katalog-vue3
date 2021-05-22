@@ -1,5 +1,5 @@
 <template>
-    <router-view/>
+    <router-view :spiele="spiele" />
 </template>
 <script>
 import {routeNames} from './router'
@@ -7,8 +7,16 @@ import {routeNames} from './router'
 export default {
   data() {
     return {
-      routeNames
+      routeNames,
+      spiele: null
     }
+  },
+  mounted() {
+    fetch(new Request(process.env.VUE_APP_GAME_URL + "/spiele/?size=9999"))
+        .then(response => response.json())
+        .then(json => json._embedded.spiele)
+        .then( spiele => this.spiele = spiele)
+    // this.categories.push("abc", "def", "ghi")
   }
 }
 </script>

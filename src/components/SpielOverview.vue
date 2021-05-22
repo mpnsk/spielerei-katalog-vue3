@@ -67,9 +67,6 @@
     </form>
 
 
-    <div v-if="games.length !== 0">
-      <!--      <div v-for="(data,index) in games" :key="index">#{{ index }}: {{ data }}</div>-->
-    </div>
     <div id="filter" class="space-y-1">
       <!--      <div id="spielname" class="">-->
       <!--        <label>Titel-->
@@ -79,7 +76,7 @@
       <!--      </div>-->
       <!--      {{angezeigteSpieleAnzahl}}-->
 
-      <div id="spiele" v-if="games.length !== 0">
+      <div id="spiele" v-if="spiele != null">
         <table class="border-collapse w-full">
           <thead>
           <tr>
@@ -93,19 +90,19 @@
               Spieldauer in Minuten
             </th>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-              Altersempgehlung
+              Altersempfehlung
             </th>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
               Leihpreis
             </th>
-            <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"
-                v-if="team">Actions
+            <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell" v-if="team">
+              Actions
             </th>
           </tr>
           </thead>
           <tbody>
           <template
-              :spiel="spiel" v-for="(spiel, index) in games" :key="spiel" :id="index"
+              :spiel="spiel" v-for="(spiel, index) in spiele" :key="spiel" :id="index"
           >
             <tr
                 class="bg-white hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0
@@ -167,6 +164,7 @@ import {filterNachDauer, filterNachName, filterNachSpieler} from "@/components/F
 import {debounce} from "@/components/Util";
 
 export default {
+  props: ['spiele'],
   setup() {
 
 
@@ -297,11 +295,10 @@ export default {
       if (spiel.spieldauerTyp === null)
         return ''
       if (spiel.spieldauerTyp === 'Einwert') {
-        if (spiel.spieldauerMinutenMin === 0 && spiel.spieldauerMinutenMax === 0)
-          {
-            const thinkingEmoji = '🤔';
-            return thinkingEmoji
-          }
+        if (spiel.spieldauerMinutenMin === 0 && spiel.spieldauerMinutenMax === 0) {
+          const thinkingEmoji = '🤔';
+          return thinkingEmoji
+        }
         return spiel.spieldauerMinutenMin
       }
       if (spiel.spieldauerTyp === 'MinMax')
@@ -344,13 +341,7 @@ export default {
     Card
   },
   created() {
-    fetch(new Request('http://localhost:8080' + "/spiele/"))
-        .then(response => response.json())
-        .then(json => {
-          console.log("json", json);
-          this.games = json._embedded.spiele
-        })
-    // this.categories.push("abc", "def", "ghi")
+    // console.log("created.spiele", this.spiele)
   }
 }
 </script>
