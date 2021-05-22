@@ -50,18 +50,19 @@
       <div class="form-example">
         <label for="spiel-kategorie">Spielkategorie</label>
         <div id="spiel-kategorie" class="space-x-1 space-y-1">
-          <div v-for="(data, index) in categories" :key="index" class="inline-block">
-            <label
-                v-bind:class="{
-               tagBase: true,
-               activeTag: spieldauerselect.includes(index),
-               inactiveTag: !spieldauerselect.includes(index) && !keineKategorieGewaehlt,
-             }"
-            >
-              <input type="checkbox" v-model="selektierteKategorien[index]">
-              {{ index }} ({{ data }})
-            </label>
-          </div>
+          <!--          -->
+          <!--          <div v-for="(data, index) in categories" :key="index" class="inline-block">-->
+          <!--            <label-->
+          <!--                v-bind:class="{-->
+          <!--               tagBase: true,-->
+          <!--               activeTag: spieldauerselect.includes(index),-->
+          <!--               inactiveTag: !spieldauerselect.includes(index) && !keineKategorieGewaehlt,-->
+          <!--             }"-->
+          <!--            >-->
+          <!--              &lt;!&ndash;              <input type="checkbox" v-model="selektierteKategorien[index]">&ndash;&gt;-->
+          <!--              {{ index }} ({{ data }})-->
+          <!--            </label>-->
+          <!--          </div>-->
         </div>
       </div>
     </form>
@@ -75,9 +76,8 @@
       <!--        </label>-->
       <!--      </div>-->
       <!--      {{angezeigteSpieleAnzahl}}-->
-
-      <div id="spiele" v-if="spiele != null">
-        <table class="border-collapse w-full">
+      <div id="spiele" v-if="true">
+        <table class="border-collapse w-full" id="spiele-tabelle">
           <thead>
           <tr>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
@@ -95,57 +95,62 @@
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
               Leihpreis
             </th>
-            <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell" v-if="team">
+            <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"
+                v-if="team">
               Actions
             </th>
           </tr>
           </thead>
           <tbody>
-          <template
-              :spiel="spiel" v-for="(spiel, index) in spiele" :key="spiel" :id="index"
-          >
-            <tr
-                class="bg-white hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0
+          <!--          <template-->
+          <!--              :spiel="spiel" v-for="(spiel, index) in spiele" :key="spiel" :id="index"-->
+          <!--          >-->
+          <template v-for="(spiel, i1) in spieleFlat" :key="i1">
+            <!--              <router-link :to="{name:'spiel', params:{kategorie: spiel.kategorie}}"-->
+              <tr
+                  class="bg-white hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0
     even-blue
 ">
-              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
               <span
                   class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Titel</span>
-                {{ spiel.name }}
-              </td>
-              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Spieleranzahl</span>
-                {{ formatSpieleranzahl(spiel) }}
-              </td>
-              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Spieldauer in Minuten</span>
-                {{ formatSpieldauer(spiel) }}
-              </td>
-              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Altersempfehlung</span>
-                {{ formatAltersempfehlung(spiel) }}
-              </td>
-              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Leihpreis</span>
-                {{ formatLeihpreis(spiel) }}
-              </td>
-              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static"
-                  v-if="team">
+                  <router-link to="/">
+                    {{ spiel.name }}
+                  </router-link>
+                </td>
+                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                  <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Spieleranzahl</span>
+                  {{ formatSpieleranzahl(spiel) }}
+                </td>
+                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                  <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Spieldauer in Minuten</span>
+                  {{ formatSpieldauer(spiel) }}
+                </td>
+                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                  <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Altersempfehlung</span>
+                  {{ formatAltersempfehlung(spiel) }}
+                </td>
+                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                  <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Leihpreis</span>
+                  {{ formatLeihpreis(spiel) }}
+                </td>
+                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static"
+                    v-if="team">
               <span
                   class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Actions</span>
-                <a href="#" class="text-blue-400 hover:text-blue-600 underline">Edit</a>
-                <a href="#" class="text-blue-400 hover:text-blue-600 underline pl-6">Remove</a>
-              </td>
-            </tr>
-            <!--            <tr-->
-            <!--                class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">-->
-            <!--              <td colspan="5"-->
-            <!---->
-            <!--                  class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">-->
-            <!--                {{ spiel.description }}-->
-            <!--              </td>-->
-            <!--            </tr>-->
+                  <a href="#" class="text-blue-400 hover:text-blue-600 underline">Edit</a>
+                  <a href="#" class="text-blue-400 hover:text-blue-600 underline pl-6">Remove</a>
+                </td>
+              </tr>
           </template>
+          <!--            <tr-->
+          <!--                class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">-->
+          <!--              <td colspan="5"-->
+          <!---->
+          <!--                  class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">-->
+          <!--                {{ spiel.description }}-->
+          <!--              </td>-->
+          <!--            </tr>-->
           </tbody>
         </table>
       </div>
@@ -164,10 +169,11 @@ import {filterNachDauer, filterNachName, filterNachSpieler} from "@/components/F
 import {debounce} from "@/components/Util";
 
 export default {
-  props: ['spiele'],
+  props: ['spiele', 'kategorie'],
   setup() {
 
 
+    /*
     let store = useStore();
 
     let zuBeginnAngezeigteSpiele = 24;
@@ -272,16 +278,18 @@ export default {
       return true
     })
 
+     */
+
     return {
       filter,
       dauer,
-      filterDauer,
-      filterKategorien,
-      selektierteKategorien,
-      angezeigteSpieleAnzahl,
-      angezeigteSpiele,
-      keineDauerGewaehlt,
-      keineKategorieGewaehlt
+      // filterDauer,
+      // filterKategorien,
+      // selektierteKategorien,
+      // angezeigteSpieleAnzahl,
+      // angezeigteSpiele,
+      // keineDauerGewaehlt,
+      // keineKategorieGewaehlt
     }
   },
   methods: {
@@ -335,6 +343,33 @@ export default {
       categories: {"abc": 1, "def": 2},
       team: false,
       spieldauerselect: []
+    }
+  },
+  computed: {
+    bezifferteKategorien() {
+      return this.kategorien
+    },
+    spieleFlat(){
+      let spiele = []
+      if (this.kategorie == null) return []
+      // for(const [key,value]  in this.kategorien){
+      //  console.log(key)
+      //   console.log(value)
+      // }
+
+      const values = Object.values(this.kategorie);
+      values.forEach(v => {
+        v.forEach(s=>{
+          spiele.push(s)
+        })
+      });
+      //   // console.log(`${k}: ${kategorien[k]}`);
+      //   for (const s in kategorien[k]) {
+      //     console.log("k.s", kategorien[k[s]]);
+      //   }
+      // }
+
+      return spiele
     }
   },
   components: {
