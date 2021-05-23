@@ -102,46 +102,47 @@
           </tr>
           </thead>
           <tbody>
-          <!--          <template-->
-          <!--              :spiel="spiel" v-for="(spiel, index) in spiele" :key="spiel" :id="index"-->
-          <!--          >-->
-          <template v-for="(spiel, i1) in spieleFlat" :key="i1">
+                    <template
+                        :spiel="spiel" v-for="(spiel, index) in spieleFlat" :key="spiel" :id="index">
+<!--          <template v-for="(spiele, kategorie) in byKategorie" :key="kategorie">-->
+<!--          <template v-for="(spiel, i1) in spiele" :key="i1">-->
             <!--              <router-link :to="{name:'spiel', params:{kategorie: spiel.kategorie}}"-->
-              <tr
-                  class="bg-white hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0
+            <tr
+                class="bg-white hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0
     even-blue
 ">
-                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
               <span
                   class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Titel</span>
-                  <router-link to="/">
-                    {{ spiel.name }}
-                  </router-link>
-                </td>
-                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                  <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Spieleranzahl</span>
-                  {{ formatSpieleranzahl(spiel) }}
-                </td>
-                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                  <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Spieldauer in Minuten</span>
-                  {{ formatSpieldauer(spiel) }}
-                </td>
-                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                  <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Altersempfehlung</span>
-                  {{ formatAltersempfehlung(spiel) }}
-                </td>
-                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
-                  <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Leihpreis</span>
-                  {{ formatLeihpreis(spiel) }}
-                </td>
-                <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static"
-                    v-if="team">
+                <router-link :to="{name: routeNames.spiel, params: {kategorie: spiel.kategorie, spielId: spiel.kategoriePosition}}">
+                  {{ spiel.name }}
+                </router-link>
+              </td>
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Spieleranzahl</span>
+                {{ formatSpieleranzahl(spiel) }}
+              </td>
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Spieldauer in Minuten</span>
+                {{ formatSpieldauer(spiel) }}
+              </td>
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Altersempfehlung</span>
+                {{ formatAltersempfehlung(spiel) }}
+              </td>
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Leihpreis</span>
+                {{ formatLeihpreis(spiel) }}
+              </td>
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static"
+                  v-if="team">
               <span
                   class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Actions</span>
-                  <a href="#" class="text-blue-400 hover:text-blue-600 underline">Edit</a>
-                  <a href="#" class="text-blue-400 hover:text-blue-600 underline pl-6">Remove</a>
-                </td>
-              </tr>
+                <a href="#" class="text-blue-400 hover:text-blue-600 underline">Edit</a>
+                <a href="#" class="text-blue-400 hover:text-blue-600 underline pl-6">Remove</a>
+              </td>
+            </tr>
+<!--          </template>-->
           </template>
           <!--            <tr-->
           <!--                class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">-->
@@ -342,14 +343,15 @@ export default {
       games: [],
       categories: {"abc": 1, "def": 2},
       team: false,
-      spieldauerselect: []
+      spieldauerselect: [],
+      routeNames: routeNames
     }
   },
   computed: {
     bezifferteKategorien() {
       return this.byKategorien
     },
-    spieleFlat(){
+    spieleFlat() {
       let spiele = []
       if (this.byKategorie == null) return []
       // for(const [key,value]  in this.byKategorien){
@@ -357,18 +359,40 @@ export default {
       //   console.log(value)
       // }
 
-      const values = Object.values(this.byKategorie);
-      values.forEach(v => {
-        v.forEach(s=>{
-          spiele.push(s)
-        })
-      });
-      //   // console.log(`${k}: ${kategorien[k]}`);
-      //   for (const s in kategorien[k]) {
-      //     console.log("k.s", kategorien[k[s]]);
+      const entries = Object.entries(this.byKategorie);
+      // console.log('start', entries);
+      for (let i = 0; i < entries.length; i++) {
+        const byKategorieElement = entries[i];
+        for (let j = 0; j < entries[i][1].length; j++) {
+          const spiel = entries[i][1][j];
+          spiel.kategorie = entries[i][0]
+          spiel.kategoriePosition = j
+          // console.log(spiel);
+          spiele.push(spiel)
+        }
+        // console.log('byKategorieElement', byKategorieElement);
+      }
+      // const values = Object.values(this.byKategorie);
+      // values.forEach(v => {
+      //   for (let i = 0; i <= v.length; i++) {
+      //     console.log('v',v);
+      //     console.log('length',v.length);
+      //     // let s = v[v.length]
+      //     // console.log('s', s)
+      //     // s.position = i
+      //     // spiele.push(s)
       //   }
-      // }
-
+      //   // console.log('v.length', v.length);
+      //   // v.forEach(s => {
+      //   //   spiele.push(s)
+      //   // })
+      // });
+      // //   // console.log(`${k}: ${kategorien[k]}`);
+      // //   for (const s in kategorien[k]) {
+      // //     console.log("k.s", kategorien[k[s]]);
+      // //   }
+      // // }
+      //
       return spiele
     }
   },
