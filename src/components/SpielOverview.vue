@@ -93,6 +93,9 @@
               Altersempfehlung
             </th>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
+              Kategorie
+            </th>
+            <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
               Leihpreis
             </th>
             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"
@@ -129,6 +132,10 @@
               <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
                 <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Altersempfehlung</span>
                 {{ formatAltersempfehlung(spiel) }}
+              </td>
+              <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
+                <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Kategorie</span>
+                {{ spiel.kategorie }}
               </td>
               <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b text-center block lg:table-cell relative lg:static">
                 <span class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Leihpreis</span>
@@ -362,8 +369,8 @@ export default {
       const entries = Object.entries(this.byKategorie);
       // console.log('start', entries);
       for (let i = 0; i < entries.length; i++) {
-        const byKategorieElement = entries[i];
         for (let j = 0; j < entries[i][1].length; j++) {
+          console.log("entries[i][0]",entries[i][0]);
           const spiel = entries[i][1][j];
           spiel.kategorie = entries[i][0]
           spiel.kategoriePosition = j
