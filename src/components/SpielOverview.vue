@@ -51,16 +51,16 @@
         <label for="spiel-kategorie">Spielkategorie</label>
         <div id="spiel-kategorie" class="space-x-1 space-y-1">
 
-          <div v-for="(data, index) in categories" :key="index" class="inline-block">
+          <div v-for="(data, key) in categories" :key="key" class="inline-block">
             <label
                 v-bind:class="{
                          tagBase: true,
-                         activeTag: spieldauerselect.includes(index),
-                         inactiveTag: !spieldauerselect.includes(index) && !keineKategorieGewaehlt,
+                         activeTag: selektierteKategorien[key] === true,
+                         inactiveTag: !keineKategorieGewaehlt && selektierteKategorien[key] !== true,
                        }"
             >
-              <!--              <input type="checkbox" v-model="selektierteKategorien[index]">-->
-              {{ index }} ({{ data }})
+                            <input type="checkbox" v-model="selektierteKategorien[key]">
+              {{ key }} ({{ data }})
             </label>
           </div>
         </div>
@@ -352,7 +352,8 @@ export default {
       // categories: {"abc": 1, "def": 2},
       team: false,
       spieldauerselect: [],
-      routeNames: routeNames
+      routeNames: routeNames,
+      selektierteKategorien: {}
     }
   },
   computed: {
@@ -364,6 +365,14 @@ export default {
         obj[entries[i][0]] = entries[i][1].length
       }
       return obj
+    },
+    keineKategorieGewaehlt(){
+      const values = Object.values(this.selektierteKategorien);
+      for (let i = 0; i < values.length; i++) {
+        if (values[i]===true)
+          return false
+      }
+      return true
     }
     ,
     bezifferteKategorien() {
