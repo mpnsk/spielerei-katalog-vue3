@@ -50,19 +50,19 @@
       <div class="form-example">
         <label for="spiel-kategorie">Spielkategorie</label>
         <div id="spiel-kategorie" class="space-x-1 space-y-1">
-          <!--          -->
-          <!--          <div v-for="(data, index) in categories" :key="index" class="inline-block">-->
-          <!--            <label-->
-          <!--                v-bind:class="{-->
-          <!--               tagBase: true,-->
-          <!--               activeTag: spieldauerselect.includes(index),-->
-          <!--               inactiveTag: !spieldauerselect.includes(index) && !keineKategorieGewaehlt,-->
-          <!--             }"-->
-          <!--            >-->
-          <!--              &lt;!&ndash;              <input type="checkbox" v-model="selektierteKategorien[index]">&ndash;&gt;-->
-          <!--              {{ index }} ({{ data }})-->
-          <!--            </label>-->
-          <!--          </div>-->
+
+          <div v-for="(data, index) in categories" :key="index" class="inline-block">
+            <label
+                v-bind:class="{
+                         tagBase: true,
+                         activeTag: spieldauerselect.includes(index),
+                         inactiveTag: !spieldauerselect.includes(index) && !keineKategorieGewaehlt,
+                       }"
+            >
+              <!--              <input type="checkbox" v-model="selektierteKategorien[index]">-->
+              {{ index }} ({{ data }})
+            </label>
+          </div>
         </div>
       </div>
     </form>
@@ -105,10 +105,10 @@
           </tr>
           </thead>
           <tbody>
-                    <template
-                        :spiel="spiel" v-for="(spiel, index) in spieleFlat" :key="spiel" :id="index">
-<!--          <template v-for="(spiele, kategorie) in byKategorie" :key="kategorie">-->
-<!--          <template v-for="(spiel, i1) in spiele" :key="i1">-->
+          <template
+              :spiel="spiel" v-for="(spiel, index) in spieleFlat" :key="spiel" :id="index">
+            <!--          <template v-for="(spiele, kategorie) in byKategorie" :key="kategorie">-->
+            <!--          <template v-for="(spiel, i1) in spiele" :key="i1">-->
             <!--              <router-link :to="{name:'spiel', params:{kategorie: spiel.kategorie}}"-->
             <tr
                 class="bg-white hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0
@@ -117,7 +117,8 @@
               <td class="w-full lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
               <span
                   class="lg:hidden absolute top-0 left-0 bg-blue-200 px-2 py-1 text-xs font-bold uppercase">Titel</span>
-                <router-link :to="{name: routeNames.spiel, params: {kategorie: spiel.kategorie, spielId: spiel.kategoriePosition}}">
+                <router-link
+                    :to="{name: routeNames.spiel, params: {kategorie: spiel.kategorie, spielId: spiel.kategoriePosition}}">
                   {{ spiel.name }}
                 </router-link>
               </td>
@@ -149,7 +150,7 @@
                 <a href="#" class="text-blue-400 hover:text-blue-600 underline pl-6">Remove</a>
               </td>
             </tr>
-<!--          </template>-->
+            <!--          </template>-->
           </template>
           <!--            <tr-->
           <!--                class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">-->
@@ -348,13 +349,23 @@ export default {
   data: () => {
     return {
       games: [],
-      categories: {"abc": 1, "def": 2},
+      // categories: {"abc": 1, "def": 2},
       team: false,
       spieldauerselect: [],
       routeNames: routeNames
     }
   },
   computed: {
+    categories() {
+      let obj = {}
+      if (this.byKategorie===null) return obj
+      const entries = Object.entries(this.byKategorie);
+      for (let i = 0; i < entries.length; i++) {
+        obj[entries[i][0]] = entries[i][1].length
+      }
+      return obj
+    }
+    ,
     bezifferteKategorien() {
       return this.byKategorien
     },
@@ -370,7 +381,7 @@ export default {
       // console.log('start', entries);
       for (let i = 0; i < entries.length; i++) {
         for (let j = 0; j < entries[i][1].length; j++) {
-          console.log("entries[i][0]",entries[i][0]);
+          console.log("entries[i][0]", entries[i][0]);
           const spiel = entries[i][1][j];
           spiel.kategorie = entries[i][0]
           spiel.kategoriePosition = j
